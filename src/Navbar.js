@@ -7,7 +7,17 @@ export default function Navbar(){
             ElectricGo
         </Link>
         <ul>
-            <CustomLink to="/warehouse"> Warehouse</CustomLink>
+            <div className="dropdown">
+            <CustomLink className="dropbtn" to="/warehouse"> Warehouse</CustomLink>
+            <div className="dropdown-content">
+                <a href="#">Add Warehouse</a>
+                <a href="#">Update Warehouse</a>
+                <a href="#">List Warehouse</a>
+                <a href="#">Delete Warehouse</a>
+            </div>
+            </div>
+            <CustomLink to="/addTruck"> addTruck</CustomLink>
+            <CustomLink to="/ListTruck"> listTruck</CustomLink>
         </ul>
 </nav>
 )
