@@ -1,28 +1,37 @@
 import * as React from "react";
+import { Form, Button } from 'react-bootstrap';
 import './style.css'
-import { useForm } from "react-hook-form";
+import useFormValue from "../../../utils/form";
 
-
-const AddTruck = (props) => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+const AddTruck = () => {
+    const register = () =>{
+        console.log("This field is required")
+    }
+    const [value, handleChange, handleSubmit] = useFormValue()
     const onSubmit = data => console.log(data);
     return (
         <section>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="group-form">
-                    <label forHtml="enroll">Enroll</label>
-                    <input className="input-format-select"
+            <Form onSubmit={handleSubmit(onSubmit)}>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label htmlFor="enroll">Email address</Form.Label>
+                    <Form.Control 
+                        className="input-format-select"
                         name="enroll"
-                        placeholder="12-HT-LA"
-                        defaultValue={props.enroll}
+                        Value={value.name || ''}
+                        onChange={handleChange}
                         {...register("enrollRequired", { required: true })}
-                    />
-                    {errors.enrollRequired && <span>This field is required</span>}
-                </div>
-                <div className="">
-                    <input className="btnSubmit" type="submit" />
-                </div>
-            </form>
+                        type="text"
+                        placeholder="Enter email" />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" placeholder="Password" />
+                </Form.Group>
+                <Button variant="dark" type="submit">
+                    Submit
+                </Button>
+            </Form>
         </section>
     );
 }

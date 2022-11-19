@@ -1,7 +1,7 @@
 import React from 'react';
 import { CDBFooter, CDBFooterLink, CDBBox, CDBBtn, CDBIcon } from 'cdbreact';
 
-export const Footer = () => {
+const Footer = () => {
   return (
     <CDBFooter className="shadow">
       <CDBBox display="flex" flex="column" className="mx-auto py-5" style={{ width: '90%' }}>
@@ -64,3 +64,4 @@ export const Footer = () => {
     </CDBFooter>
   );
 };
+export default Footer;
