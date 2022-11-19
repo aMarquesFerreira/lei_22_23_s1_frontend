@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Routes,
     Route,
@@ -8,7 +7,7 @@ export default function App() {
     return (
         <>
             <Routes>
-                <Route exact path="/" element={<Dashboard/>}/>
+                <Route exact path="/" element={<Dashboard />} />
             </Routes>
         </>
     );

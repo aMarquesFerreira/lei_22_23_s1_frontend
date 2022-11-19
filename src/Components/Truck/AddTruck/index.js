@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Form, Button } from 'react-bootstrap';
 import './style.css'
 import useFormValue from "../../../Utils/form";
