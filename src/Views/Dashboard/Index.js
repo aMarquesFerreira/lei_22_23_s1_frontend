@@ -4,8 +4,6 @@ import AddTruck from '../../Components/Truck/AddTruck';
 export default function Dashboard() {
     return (
         <>
-            <header>
-            </header>
             <main>
                 <Container>
                     <Row>
@@ -13,9 +11,6 @@ export default function Dashboard() {
                     </Row>
                 </Container>
             </main>
-            <footer>
-
-            </footer>
         </>
     );
 }

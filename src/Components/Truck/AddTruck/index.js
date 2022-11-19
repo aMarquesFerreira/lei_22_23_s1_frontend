@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Form, Button } from 'react-bootstrap';
 import './style.css'
-import useFormValue from "../../../utils/form";
+import useFormValue from "../../../Utils/form";
 
 const AddTruck = () => {
     const register = () =>{
