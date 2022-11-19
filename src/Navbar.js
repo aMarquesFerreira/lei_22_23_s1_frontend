@@ -15,6 +15,13 @@ export default function Navbar(){
                 <a href="#">List Warehouse</a>
                 <a href="#">Delete Warehouse</a>
             </div>
+            <CustomLink className="dropbtn" to="/delivery"> Delivery</CustomLink>
+            <div className="dropdown-content">
+                <a href="#">Add Delivery</a>
+                <a href="#">Update Delivery</a>
+                <a href="#">List Delivery</a>
+                <a href="#">Delete Delivery</a>
+            </div>
             </div>
             <CustomLink to="/addTruck"> addTruck</CustomLink>
             <CustomLink to="/ListTruck"> listTruck</CustomLink>
