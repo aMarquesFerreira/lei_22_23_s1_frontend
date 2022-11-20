@@ -1,89 +1,47 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import {
-    CDBNavbar,
-    CDBNavBrand,
-    CDBNavItem,
-    CDBNavLink,
-    CDBDropDown,
-    CDBDropDownMenu,
-    CDBDropDownToggle,
-    CDBBtn,
-    CDBNavToggle,
-    CDBIcon,
-    CDBCollapse,
-    CDBNavbarNav,
-    CDBContainer,
-} from 'cdbreact';
+import { Navbar, Nav, NavDropdown, Form, Button, ButtonGroup } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+function NavbarComponent() {
+    /*   const navigate = useNavigate()
+      
+      const handleLogoutClick = () => {
+           //logout()
+           navigate.push('/')
+       }  */
 
-const Navbar = () => {
-    const [collapse2, setCollapse2] = useState(false);
-
-    const bgBlack = { backgroundColor: '#000000', color: '#f4f4f4' };
-
+    /*     const authButton = () => {
+            if (currentUser === null) {
+                return (
+                    <ButtonGroup>
+                        <Button variant="secondary" as={Link} to="/login">Login</Button>
+                        <Button variant="secondary" as={Link} to="/signup">Signup</Button>
+                    </ButtonGroup>
+                )
+    
+            } else {
+                return <Button variant="secondary" onClick={handleLogoutClick}>Logout</Button>
+            }
+        } */
     return (
-        <CDBContainer>
-            <Router style={{ width: '100%' }}>
-                <CDBNavbar style={bgBlack} dark expand="md" scrolling>
-                    <CDBNavBrand href="/">
-                        <strong>Navbar</strong>
-                    </CDBNavBrand>
-                    <CDBNavToggle
-                        onClick={() => {
-                            setCollapse2(!collapse2);
-                        }}
-                    />
-                    <CDBCollapse id="navbarCollapse1" isOpen={collapse2} navbar>
-                        <CDBNavbarNav left className="align-items-center">
-                            <CDBNavItem>
-                                <CDBDropDown>
-                                    <CDBDropDownToggle caret style={{ padding: 0 }} color="dark" circle>
-                                        Categories
-                                    </CDBDropDownToggle>
-                                    <CDBDropDownMenu>Coming soon #pleaseStayUpdated.</CDBDropDownMenu>
-                                </CDBDropDown>
-                            </CDBNavItem>
-                            <CDBNavItem>
-                                <CDBBtn circle color="dark" style={{ padding: 0 }}>
-                                    <CDBNavLink to="#">Help</CDBNavLink>
-                                </CDBBtn>
-                            </CDBNavItem>
-                            <CDBNavItem>
-                                <CDBBtn circle color="dark" style={{ padding: 0 }}>
-                                    <CDBNavLink to="#">About</CDBNavLink>
-                                </CDBBtn>
-                            </CDBNavItem>
-                        </CDBNavbarNav>
-                        <CDBNavbarNav right>
-                            <CDBNavItem>
-                                <CDBBtn circle color="dark" style={{ padding: 0 }}>
-                                    <CDBNavLink to="#">
-                                        <CDBIcon className="mr-2" icon="globe" />
-                                        EN
-                                    </CDBNavLink>
-                                </CDBBtn>
-                            </CDBNavItem>
-
-                            <CDBNavItem>
-                                <CDBBtn circle color="dark" style={{ padding: 0 }}>
-                                    <CDBNavLink to="#">
-                                        <CDBIcon className="mr-2" icon="user" />
-                                        Login
-                                    </CDBNavLink>
-                                </CDBBtn>
-                            </CDBNavItem>
-                            <CDBNavItem>
-                                <CDBBtn color="white" style={{ padding: '0px 10px' }}>
-                                    <CDBNavLink to="#" style={{ color: '#000' }}>
-                                        Sign Up
-                                    </CDBNavLink>
-                                </CDBBtn>
-                            </CDBNavItem>
-                        </CDBNavbarNav>
-                    </CDBCollapse>
-                </CDBNavbar>
-            </Router>
-        </CDBContainer>
+        <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+            <Navbar.Brand className="mx-3">Truck</Navbar.Brand>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="mr-auto">
+                    <Nav.Link as={Link} to="/">Home</Nav.Link>
+                    <Nav.Link as={Link} to="/about">About</Nav.Link>
+                    <NavDropdown title="Truck" id="collasible-nav-dropdown">
+                        <NavDropdown.Item as={Link} to="/truck">List truck</NavDropdown.Item>
+                        <NavDropdown.Item as={Link} to="/">Create truck</NavDropdown.Item>
+                    </NavDropdown>
+                </Nav>
+                <Form inline className="mx-3">
+                <ButtonGroup>
+                    <Button variant="dark" as={Link} to="/signin">Login</Button>
+                    <Button variant="warning" as={Link} to="/signup">Signup</Button>
+                </ButtonGroup>
+            </Form>
+            </Navbar.Collapse>
+        </Navbar>
     );
-};
-export default Navbar;
+}
+export default NavbarComponent;
