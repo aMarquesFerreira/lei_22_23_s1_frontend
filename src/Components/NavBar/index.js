@@ -23,7 +23,7 @@ function NavbarComponent() {
         } */
     return (
         <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-            <Navbar.Brand className="mx-3">Truck</Navbar.Brand>
+            <Navbar.Brand className="mx-3">ElectricGo</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
@@ -32,6 +32,14 @@ function NavbarComponent() {
                     <NavDropdown title="Truck" id="collasible-nav-dropdown">
                         <NavDropdown.Item as={Link} to="/truck">List truck</NavDropdown.Item>
                         <NavDropdown.Item as={Link} to="/">Create truck</NavDropdown.Item>
+                    </NavDropdown>
+                    <NavDropdown title="Warehouse" id="collasible-nav-dropdown">
+                        <NavDropdown.Item as={Link} to="/warehouse">List warehouse</NavDropdown.Item>
+                        <NavDropdown.Item as={Link} to="/">Create warehouse</NavDropdown.Item>
+                    </NavDropdown>
+                    <NavDropdown title="Delivery" id="collasible-nav-dropdown">
+                        <NavDropdown.Item as={Link} to="/delivery">List delivery</NavDropdown.Item>
+                        <NavDropdown.Item as={Link} to="/">Create delivery</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
                 <Form inline className="mx-3">
