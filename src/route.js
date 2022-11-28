@@ -2,13 +2,14 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import Dashboard from "./Views/Dashboard"
+import Dashboard from "./Views/Dashboard/Index"
 import Login from "./Components/Login";
 import SignUp from "./Components/SignUp";
 import Truck from "./Views/Truck";
 import About from "./Views/About";
 import Map from "./Views/Map";
 import NewTruck from "./Views/Truck/AddTruck";
+import Planeamento from "./Views/Planeamento";
 
 export default function App() {
     return (
@@ -21,6 +22,7 @@ export default function App() {
           <Route exact path="/truck" element={<Truck />} />
           <Route exact path="/map" element={<Map />} />
           <Route exact path="/newTruck" element={<NewTruck />} />
+          <Route exact path="/planeamento" elemento={<Planeamento />} />
         </Routes>
       </>
     );
