@@ -3,7 +3,7 @@ import { API_BASE_URL } from '../../Config/config'
 
 export async function truckGetAll() {
     try {
-        const response = await axios.get(`${API_BASE_URL}/truck`)
+        const response = await axios.get(`${API_BASE_URL}/vehicles/trucks`);
         return response.status(200).json();
     } catch (err) {
         throw new Error(err);
@@ -33,11 +33,11 @@ export async function truckGetById(id) {
 
 export async function truckSave(truck) {
     try {
-        const response = await axios.post(`${API_BASE_URL}/truck`, {
-            body: JSON.stringify(truck),
-            headers: {
-                'Content-Type': 'application/json',
-            },
+        const response = await axios.post(`${API_BASE_URL}/vehicles/truck`, {
+          body: JSON.stringify(truck),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
         return response.status(200).json();
     } catch (err) {

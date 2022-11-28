@@ -1,18 +1,67 @@
 import { Container, Row, Jumbotron } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import NavbarComponent from '../../Components/NavBar';
 import FooterCompoment from '../../Components/Footer';
-import './styles.css'
+import './styles.css';
+import ListTruck from '../../Components/List';
+import { truckDelete, truckGetAll } from '../../Services/Truck';
+import data from '../../Data/truck';
 export default function Truck() {
+  const navigation = useNavigate();
+  const [trucks, setTrucks] = useState([data]);
+  const [isLoading, setLoading] = useState(false);
+
+  const handleDeletetruck = (id) => {
+    setLoading(true);
+    setTimeout(() => {
+      truckDelete(id).then((res) => {
+        if (res.status === 200) {
+          setTrucks(trucks.filter((truck) => truck.id !== id));
+          setLoading(false);
+          setTimeout(() => {
+            navigation('/');
+          }, 1000);
+        }
+      });
+    });
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    truckGetAll()
+      .then((data) => {
+        console.log(data);
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <>
+        <h1>Loading ...</h1>
+      </>
+    );
+  }
+
   return (
     <>
       <header>
         <NavbarComponent />
-        <Jumbotron className='text-center'>
+        <Jumbotron className="text-center">
           <Container>
-            <h1 className='jumbotron-heading'>List Truck</h1>
-            <p className='lead text-muted'>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies purus velit.
-              Ut et viverra mi, vel eleifend dolor. Vestibulum ipsum dui, posuere sit amet ligula a, finibus accumsan sapien</p>
+            <h1 className="jumbotron-heading">List Truck</h1>
+            <p className="lead text-muted">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies purus velit. Ut
+              et viverra mi, vel eleifend dolor. Vestibulum ipsum dui, posuere sit amet ligula a,
+              finibus accumsan sapien
+            </p>
           </Container>
         </Jumbotron>
       </header>
@@ -23,18 +72,24 @@ export default function Truck() {
               <div className="table-title">
                 <Row>
                   <div className="col-sm-5">
-                    <h2>Truck <b>Management</b></h2>
+                    <h2>
+                      Truck <b>Management</b>
+                    </h2>
                   </div>
                   <div className="col-sm-7">
-                    <a href="#" className="btn btn-secondary"> <span>Add New Truck</span></a>
-                    <a href="#" className="btn btn-secondary"> <span>Export to Excel</span></a>
+                    <Link to={"/newTruck"} className="btn btn-secondary">
+                      <span>Add New Truck</span>
+                    </Link>
+                    <a href="#" className="btn btn-secondary">
+                      {' '}
+                      <span>Export to Excel</span>
+                    </a>
                   </div>
                 </Row>
               </div>
               <table className="table table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>#</th>
                     <th>Enroll</th>
                     <th>Year</th>
                     <th>Month</th>
@@ -43,17 +98,7 @@ export default function Truck() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td><a href="#"><img src="/examples/images/avatar/1.jpg" className="avatar" alt="Avatar" /> Michael Holz</a></td>
-                    <td>04/10/2013</td>
-                    <td>Admin</td>
-                    <td><span className="status text-success">&bull;</span> Active</td>
-                    <td>
-                      <a href="#" className="settings" title="Settings" data-toggle="tooltip"><i className="material-icons">&#xE8B8;</i></a>
-                      <a href="#" className="delete" title="Delete" data-toggle="tooltip"><i className="material-icons">&#xE5C9;</i></a>
-                    </td>
-                  </tr>
+                  <ListTruck trucks={trucks} handleDeletetruck={handleDeletetruck} />
                 </tbody>
               </table>
             </div>
@@ -62,5 +107,5 @@ export default function Truck() {
       </main>
       <FooterCompoment />
     </>
-  )
+  );
 }
