@@ -25,8 +25,7 @@ const AddTruck = () => {
     setTruck((truck) => ({ ...truck, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const headers = {
       'Content-Type': 'application/json'
     };
@@ -50,14 +49,14 @@ const AddTruck = () => {
       .catch(() => {
         setStatus({
           type: 'erro',
-          messagem: 'Erro: Tente mais tarde!'
+          messagem: 'Err: Try later!'
         });
       });
   };
 
   return (
     <section>
-      {status.type === 'redErro' ? <SuccessCompoment /> : <AlertDismissible/>}
+      {status.type === 'erro' ? <AlertDismissible /> : <SuccessCompoment />}
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Form.Group as={Col}>

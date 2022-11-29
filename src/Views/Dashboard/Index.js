@@ -1,8 +1,8 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import NavbarComponent from '../../Components/NavBar';
 import Footer from '../../Components/Footer';
-import Header  from '../../Components/Header';
 import ImgTRuck from './../../Components/Carousel/imgFrist.jpg'
+import Header from "../../Components/Header";
 export default function Dashboard() {
     return (
       <>

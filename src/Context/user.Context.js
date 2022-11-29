@@ -1,18 +1,13 @@
-import React, { createContext, useEffect, useState } from 'react';
-
-import history from '../services/history';
+import { createContext, useEffect, useState } from 'react';
 
 import api from '../Config/config';
 
 const Context = createContext();
 
 function AuthProvider({ children }) {
-  //padrao nao esta logado
   const [authenticated, setAuthenticated] = useState(false);
 
   const [loading, setLoading] = useState(true);
-
-  //verificar se existe o token
   useEffect(() => {
     const getLogin = async () => {
       const token = localStorage.getItem('token');

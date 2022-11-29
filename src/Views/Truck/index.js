@@ -17,22 +17,26 @@ export default function Truck() {
     setTimeout(() => {
       truckDelete(id).then((res) => {
         if (res.status === 200) {
-          setTrucks(trucks.filter((truck) => truck.id !== id));
+          setTrucks(trucks.filter((truck) => truck.idTruck !== id));
           setLoading(false);
-          setTimeout(() => {
-            navigation('/');
-          }, 1000);
+          // setTimeout(() => {
+          //   navigation('/');
+          // }, 1000);
         }
       });
     });
   };
 
+  const handleUpdatetruck = (id) => {
+    navigation(`/truck/edit/${id}`)
+  };
+
   useEffect(() => {
     setLoading(true);
     truckGetAll()
-      .then((data) => {
-        console.log(data);
-        
+      .then((trucks) => {
+        console.log(trucks);
+        setTrucks(trucks);
       })
       .catch((error) => {
         console.log(error);
@@ -77,7 +81,7 @@ export default function Truck() {
                     </h2>
                   </div>
                   <div className="col-sm-7">
-                    <Link to={"/newTruck"} className="btn btn-secondary">
+                    <Link to={"./new"} className="btn btn-secondary">
                       <span>Add New Truck</span>
                     </Link>
                     <a href="#" className="btn btn-secondary">
@@ -94,11 +98,12 @@ export default function Truck() {
                     <th>Year</th>
                     <th>Month</th>
                     <th>Tare</th>
+                    <th>BatteryCapacity</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <ListTruck trucks={trucks} handleDeletetruck={handleDeletetruck} />
+                  <ListTruck trucks={trucks} handleDeletetruck={handleDeletetruck} handleUpdatetruck={handleUpdatetruck} />
                 </tbody>
               </table>
             </div>
