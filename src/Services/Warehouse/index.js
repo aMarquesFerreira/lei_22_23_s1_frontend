@@ -16,7 +16,7 @@ export async function warehouseGetAll() {
 
 export async function warehouseDelete(identifier) {
     try {
-        const response = await axios.get(`${DOTNET_BASE_URL}/${identifier}/truck`)
+        const response = await axios.get(`${DOTNET_BASE_URL}/warehouses/${identifier}`)
 
         return response.data;
         //return response.status(200).json();

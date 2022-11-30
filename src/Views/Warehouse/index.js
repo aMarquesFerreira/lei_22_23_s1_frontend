@@ -1,20 +1,23 @@
 import { Container, Row, Jumbotron } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import NavbarComponent from '../../Components/NavBar';
 import FooterCompoment from '../../Components/Footer';
-import './styles.css'
-import {warehouseGetAll} from '../../Services/Warehouse/index.js';
-import {warehouseDelete} from '../../Services/Warehouse/index.js';
-import { useEffect, useState } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import './styles.css';
+import ListWarehouse from '../../Components/Warehouse/ListWarehouse';
+import {warehouseGetAll} from '../../Services/Warehouse';
+import {warehouseDelete} from '../../Services/Warehouse';
+import data from '../../Data/warehouse';
 
 
 export default function Warehouse() {
+  const navigation = useNavigate();
   const [warehouses, setWarehouses] = useState([]);
+  const [isLoading, setLoading] = useState(false);
   
   console.log("warehouse view start");
   
-useEffect( ()=> {
+/*useEffect( ()=> {
                     async function fetchData() {
                       let warehouseList = await warehouseGetAll();
                       if(warehouseList== null)
@@ -26,29 +29,50 @@ useEffect( ()=> {
                     }
                     fetchData();
              },
-              []);
+              []);*/
 
 
-const handleDeletetruck = (id) => {
+
+const handleDeletewarehouse = (id) => {
                 setLoading(true);
                 setTimeout(() => {
-                  truckDelete(id).then((res) => {
+                  warehouseDelete(id).then((res) => {
                     if (res.status === 200) {
-                      setTrucks(trucks.filter((truck) => truck.idTruck !== id));
+                      setWarehouses(warehouses.filter((warehouse) => warehouse.warehouseIdentifier.identifier !== id));
                       setLoading(false);
-                      // setTimeout(() => {
-                      //   navigation('/');
-                      // }, 1000);
                     }
                   });
                 });
               };
 
 
-    const handleUpdatetruck = (id) => {
-        navigation(`/truck/edit/${id}`)
+    const handleUpdatewarehouse = (id) => {
+        navigation(`/warehouse/edit/${identifier}`)
     };
   
+
+
+useEffect(() => {
+      setLoading(true);
+      warehouseGetAll().then((warehouses) => {
+          console.log(warehouses);
+          setWarehouses(warehouses);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }, []);
+
+    if (isLoading) {
+      return (
+        <>
+          <h1>Loading ...</h1>
+        </>
+      );
+    }
     
   return (
     <>
@@ -76,49 +100,26 @@ const handleDeletetruck = (id) => {
                   <Link to={"./new"} className="btn btn-secondary">
                         <span>Add New Warehouse</span>
                   </Link>
-                  <a href="#" className="btn btn-secondary"> <span>Export to Excel</span></a>
-                  <ButtonGroup>
-                    <Button className="btn btn-secondary" as={Link} to="/signin">nao usar DUVIDA</Button>
-                    <Button className="btn btn-secondary" as={Link} to="/signup">nao usar DUVIDA</Button>
-                  </ButtonGroup>
-                    
+                  <a href="#" className="btn btn-secondary">
+                    {' '}
+                   <span>Export to Excel</span>
+                   </a>
                   </div>
                 </Row>
               </div>
               <table className="table table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>#</th>
                     <th>Identifier</th>
                     <th>Designation</th>
                     <th>Address</th>
                     <th>Coordinates</th>
                     <th>Altitude</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
-                <tbody>
-              
-                  
-                {warehouses && warehouses.map(warehouse =>
-                    <tr key={warehouse.idwarehouse}>
-                        <td>{warehouse.id}</td>
-                        <td>{warehouse.warehouseIdentifier.identifier}</td>
-                        <td>{warehouse.designation.warehouseDesignation}</td>
-                        <td>{warehouse.address.street}</td>
-                        <td>{warehouse.coordinates.latitude},{warehouse.coordinates.longitude}</td>
-                        <td>{warehouse.altitude.whAltitude}</td>
-                        <td><span className="status text-success">&bull;</span> Active</td>
-                        <td>
-                          <a href="#" className="settings" title="Settings" data-toggle="tooltip"><i className="material-icons">&#xE8B8;</i></a>
-                          <a href="#" className="delete" title="Delete" data-toggle="tooltip" onClick='deleteWarehouse()'><i className="material-icons">&#xE5C9;</i></a>
-                        </td>
-
-                    </tr>
-                )}
-
-
-                
-                
+                <tbody>              
+                <ListWarehouse warehouses={warehouses} handleDeletewarehouse={handleDeletewarehouse} handleUpdatewarehouse={handleUpdatewarehouse} />
                 </tbody>
               </table>
             </div>
@@ -127,5 +128,5 @@ const handleDeletetruck = (id) => {
       </main>
       <FooterCompoment />
     </>
-  )
+  );
 }
