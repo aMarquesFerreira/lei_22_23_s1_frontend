@@ -10,7 +10,7 @@ export default function NewWarehouse() {
         <NavbarComponent />
         <Jumbotron className="text-center">
           <Container>
-            <h1 className="jumbotron-heading">Created Warehouse</h1>
+            <h1 className="jumbotron-heading">Create Warehouse</h1>
             <p className="lead text-muted">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies purus velit. Ut
               et viverra mi, vel eleifend dolor. Vestibulum ipsum dui, posuere sit amet ligula a,
