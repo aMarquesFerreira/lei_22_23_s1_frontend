@@ -40,8 +40,7 @@ export async function warehouseGetById(identifier) {
 
 export async function warehouseSave(warehouse) {
     try {
-        const response = await axios.post(`${DOTNET_BASE_URL}/warehouses`, {
-            body: JSON.stringify(warehouse),
+        const response = await axios.post(`${DOTNET_BASE_URL}/warehouses`, warehouse, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -58,8 +57,7 @@ export async function warehouseUpdate(identifier, warehouse) {
         if (!identifier) {
             throw new Error('Invalid input data provided.');
         }
-        const response = await axios.post(`${DOTNET_BASE_URL}/warehouses/${identifier}`, {
-            body: JSON.stringify(warehouse),
+        const response = await axios.post(`${DOTNET_BASE_URL}/warehouses/${identifier}`, warehouse, {
             headers: {
                 'Content-Type': 'application/json',
             },

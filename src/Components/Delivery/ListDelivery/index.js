@@ -2,22 +2,21 @@ import './style.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPencil,faTrash} from "@fortawesome/free-solid-svg-icons";
 
-const ListDelivery = (props) => {
-    return props.deliveries.length > 0 ? (
-        props.deliveries.map((delivery, i) => {
+const ListTruck = (props) => {
+    return props.trucks.length > 0 ? (
+        props.trucks.map((truck, i) => {
             return (
                 <tr key={i}>
-                    <td>{delivery.deliveryIdentifier.identifier}</td>
-                    <td>{delivery.deliveryDate}</td>
-                    <td>{delivery.deliveryWeight.DeliveryWeight}</td>
-                    <td>{delivery.deliveryWarehouse}</td>
-                    <td>{delivery.timeLoadTruck.time}</td>
-                    <td>{delivery.timeUnloadTruck.time}</td>
+                    <td>{truck.enroll}</td>
+                    <td>{truck.month}</td>
+                    <td>{truck.year}</td>
+                    <td>{truck.tare}</td>
+                    <td>{truck.batteryCapacity}</td>
                     <td>
-                        <button onClick={() => props.handleUpdateDelivery(delivery.idDelivery)} className="delete">
+                        <button onClick={() => props.handleUpdatetruck(truck.idTruck)} className="delete">
                             <FontAwesomeIcon icon={faPencil}/>
                         </button>
-                        <button onClick={() => props.handleDeleteDelivery(delivery.idDelivery)} className="update">
+                        <button onClick={() => props.handleDeletetruck(truck.idTruck)} className="update">
                             <FontAwesomeIcon icon={faTrash}/>
                         </button>
                     </td>
@@ -26,9 +25,9 @@ const ListDelivery = (props) => {
         })
     ) : (
         <tr>
-            <td colSpan={4}>No deliveries found</td>
+            <td colSpan={4}>No trucks found</td>
         </tr>
     );
 };
 
-export default ListDelivery;
+export default ListTruck;
