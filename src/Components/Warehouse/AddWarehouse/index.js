@@ -80,7 +80,9 @@ const AddWarehouse = () => {
               placeholder="Enter designation"
             />
           </Form.Group>
-          <Form.Group as={Col}>
+        </Row>
+        <Row className="mb-3">
+        <Form.Group as={Col}>
             <Form.Label htmlFor="month">Street</Form.Label>
             <Form.Control
               name="street"
@@ -89,8 +91,6 @@ const AddWarehouse = () => {
               placeholder="Enter street"
             />
           </Form.Group>
-        </Row>
-        <Row className="mb-3">
           <Form.Group as={Col}>
             <Form.Label htmlFor="doorNumber">Door Number</Form.Label>
             <Form.Control
@@ -118,8 +118,6 @@ const AddWarehouse = () => {
               placeholder="Enter city"
             />
           </Form.Group>
-        </Row>
-        <Row className="mb-3">
           <Form.Group as={Col}>
             <Form.Label htmlFor="country">Country</Form.Label>
             <Form.Control
