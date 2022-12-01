@@ -1,31 +1,30 @@
-import { Environment, OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import { Suspense, useEffect, useState } from 'react';
-import BoundMap  from './boundMapBox';
+import {
+  Environment,
+  OrbitControls,
+  PerspectiveCamera,
+  PresentationControls,
+  Stage,
+  useDepthBuffer
+} from '@react-three/drei';
+import { Suspense, useEffect, useState, createRef } from 'react';
+import MapSvg from './mapSvg';
+import { MapControls } from 'three-stdlib';
+import { Canvas } from '@react-three/fiber';
+import { Nodes, Node } from './nodes';
 
 const Scene = () => {
-  const [thirdPerson, setThirdPerson] = useState(false);
-  const [cameraPosition, setCameraPosition] = useState([-6, 3.9, 6.21]);
-
-  useEffect(() => {
-    function keydownHandler(e) {
-      if (e.key == 'k') {
-        if (thirdPerson) setCameraPosition([-6, 3.9, 6.21 + Math.random() * 0.01]);
-        setThirdPerson(!thirdPerson);
-      }
-    }
-
-    window.addEventListener('keydown', keydownHandler);
-    return () => window.removeEventListener('keydown', keydownHandler);
-  }, [thirdPerson]);
-
+   const [[a, b, c]] = useState(() => [...Array(5)].map(createRef));
   return (
-    <Suspense fallback={null}>
-      <Environment files={process.env.PUBLIC_URL + 'obj/textures/envmap.hdr'} background={'both'} />
-
-      <PerspectiveCamera makeDefault position={cameraPosition} fov={40} />
-      {!thirdPerson && <OrbitControls target={[100, -0.71, 0.03]} />}
-      <BoundMap />
-    </Suspense>
+    <>
+      <Suspense fallback={null}>
+        <MapSvg />
+        <Nodes>
+          <Node ref={a} name="Porto" color="#204090" position={[-80, -20, 0]} connectedTo={[b]} />
+          <Node ref={b} name="Coimbra" color="#904020" position={[2, -3, 0]} connectedTo={[a]} />
+          <Node ref={b} name="Viana" color="#904020" position={[-100, -40, 0]} connectedTo={[a]} />
+        </Nodes>
+      </Suspense>
+    </>
   );
-}
+};
 export default Scene;

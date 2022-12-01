@@ -21,7 +21,7 @@ export async function truckDelete(id) {
 export async function truckGetById(id) {
     try {
         const response = await axios.get(`${API_BASE_URL}/vehicles/${id}/truck`);
-        if (!response.ok) {
+        if (response.ok === false) {
             throw new Error('Failed to axios get.');
         }
         return response.data;
@@ -37,13 +37,13 @@ export async function truckSave(truck) {
                 'Content-Type': 'application/json'
             }
         });
-        return response.status(200).json();
+        return response.status(201).json();
     } catch (err) {
         throw new Error(err);
     }
 }
 
-export async function truckUpdate(id, truck) {
+export async function truckUpdate(id, truck, options) {
     try {
         if (!id) {
             throw new Error('Invalid input data provided.');
