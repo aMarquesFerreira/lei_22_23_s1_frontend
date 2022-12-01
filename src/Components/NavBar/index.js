@@ -33,14 +33,14 @@ function NavbarComponent() {
           <Nav.Link as={Link} to="/about">
             About
           </Nav.Link>
-           <Nav.Link as={Link} to="/truck">
-                      Truck
+          <Nav.Link as={Link} to="/truck">
+            Truck
           </Nav.Link>
           <NavDropdown title="Warehouse" id="collasible-nav-dropdown">
             <NavDropdown.Item as={Link} to="/warehouse">
               List warehouse
             </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/">
+            <NavDropdown.Item as={Link} to="/warehouse/new">
               Create warehouse
             </NavDropdown.Item>
           </NavDropdown>
@@ -48,7 +48,7 @@ function NavbarComponent() {
             <NavDropdown.Item as={Link} to="/delivery">
               List delivery
             </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/">
+            <NavDropdown.Item as={Link} to="/warehouse/new">
               Create delivery
             </NavDropdown.Item>
           </NavDropdown>
