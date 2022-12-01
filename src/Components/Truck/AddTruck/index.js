@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Form, Button, Col, Row } from 'react-bootstrap';
-import './style.css';
 import { truckSave } from './../../../Services/Truck';
 import SuccessCompoment from './../../Alerts/Success';
 import AlertDismissible  from './../../Alerts/danger';

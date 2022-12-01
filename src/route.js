@@ -7,6 +7,8 @@ import About from './Views/About';
 import Map from './Views/Map';
 import NewTruck from './Views/Truck/AddTruck';
 import EditTruck from './Views/Truck/EditTruck';
+import Delivery from "./Views/Delivery";
+import NewDelivery from './Views/Delivery/AddDelivery';
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
         <Route exact path="/truck/new" element={<NewTruck />} />
         <Route exact path="/truck/edit/:id" element={<EditTruck />} />
         <Route exact path="/map" element={<Map />} />
+        <Route exact path="/delivery" element={<Delivery />} />
+        <Route exact path="/delivery/new" element={<NewDelivery />} />
       </Routes>
     </>
   );

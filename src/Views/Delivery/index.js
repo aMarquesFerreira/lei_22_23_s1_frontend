@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NavbarComponent from '../../Components/NavBar';
 import FooterCompoment from '../../Components/Footer';
-import './styles.css';
 import ListDelivery from '../../Components/Delivery/ListDelivery';
 import { deliveryDelete, deliveryGetAll } from '../../Services/Delivery';
 import * as PropTypes from "prop-types";

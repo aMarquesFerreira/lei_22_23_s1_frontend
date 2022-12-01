@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NavbarComponent from '../../Components/NavBar';
 import FooterCompoment from '../../Components/Footer';
-import './styles.css';
 import ListTruck from '../../Components/List';
 import { truckDelete, truckGetAll } from '../../Services/Truck';
 import data from '../../Data/truck';
