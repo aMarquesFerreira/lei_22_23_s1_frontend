@@ -9,6 +9,10 @@ import NewTruck from './Views/Truck/AddTruck';
 import EditTruck from './Views/Truck/EditTruck';
 import Delivery from "./Views/Delivery";
 import NewDelivery from './Views/Delivery/AddDelivery';
+import Warehouse from "./Views/Warehouse";
+import NewWarehouse from './Views/Warehouse/AddWarehouse';
+import Planeamento from './Views/Planeamento';
+
 
 export default function App() {
   return (
@@ -24,6 +28,9 @@ export default function App() {
         <Route exact path="/map" element={<Map />} />
         <Route exact path="/delivery" element={<Delivery />} />
         <Route exact path="/delivery/new" element={<NewDelivery />} />
+        <Route exact path="/warehouse" element={<Warehouse />} />
+        <Route exact path="/warehouse/new" element={<NewWarehouse />} />
+        <Route exact path="/planeamento" element={<Planeamento />} />
       </Routes>
     </>
   );

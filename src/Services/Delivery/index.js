@@ -12,7 +12,7 @@ export async function deliveryGetAll() {
 
 export async function deliveryDelete(identifier) {
     try {
-        return await axios.delete(`${DOTNET_BASE_URL}//${identifier}/delivery`)
+        return await axios.delete(`${DOTNET_BASE_URL}/deliverys/${identifier}`);
     } catch (err) {
         throw new Error(err);
     }
@@ -32,11 +32,10 @@ export async function deliveryGetById(identifier) {
 
 export async function deliverySave(delivery) {
     try {
-        const response = await axios.post(`${DOTNET_BASE_URL}/deliverys`, {
-            body: JSON.stringify(delivery),
+        const response = await axios.post(`${DOTNET_BASE_URL}/deliverys`, delivery, {
             headers: {
                 'Content-Type': 'application/json',
-            },
+            }
         });
         return response.data;
         //return response.status(200).json();
@@ -50,8 +49,7 @@ export async function deliveryUpdate(identifier, delivery) {
         if (!identifier) {
             throw new Error('Invalid input data provided.');
         }
-        const response = await axios.post(`${DOTNET_BASE_URL}/deliverys/${identifier}`, {
-            body: JSON.stringify(delivery),
+        const response = await axios.post(`${DOTNET_BASE_URL}/deliverys/${identifier}`, delivery, {
             headers: {
                 'Content-Type': 'application/json',
             },
