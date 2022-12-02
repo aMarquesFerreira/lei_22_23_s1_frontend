@@ -7,7 +7,6 @@ export async function warehouseGetAll() {
         const response = await axios.get(`${DOTNET_BASE_URL}/warehouses`);
 
         return response.data;
-        //return response.status(200).json();
     } catch (err) {
         throw new Error(err);
     }

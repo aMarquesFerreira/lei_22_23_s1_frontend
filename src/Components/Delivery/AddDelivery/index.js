@@ -46,7 +46,9 @@ const AddDelivery = () => {
     delivery.TimeLoadTruck.Time = e.target.value;
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     const headers = {
       'Content-Type': 'application/json'
     };
@@ -93,7 +95,7 @@ const AddDelivery = () => {
             <Form.Control
               name={delivery.DeliveryDate}
               onChange={handleDeliveryDateChange}
-              type="text"
+              type="date"
               placeholder="Enter delivery date"
             />
           </Form.Group>

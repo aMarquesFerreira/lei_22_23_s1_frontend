@@ -1,59 +1,86 @@
-import { useEffect, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Form, Button, Col, Row } from 'react-bootstrap';
 import './style.css';
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { truckGetAll } from '../../Services/Truck';
+import { warehouseGetAll } from '../../Services/Warehouse';
+import { travelSave } from '../../Services/Travel';
+import SuccessCompoment from './../../Components/Alerts/Success';
+import AlertDismissible from './../../Components/Alerts/danger';
 
-const PlaneamentoCompoment = ({ idTruck }) => {
-  const { idTRuck } = useParams();
-  const [truck, setTruck] = useState({});
+const PlaneamentoCompoment = () => {
+  const initTravel = {
+    departureDate: '',
+    arrivalDate: '',
+    departureTime: '',
+    arrivalTime: '',
+    departureLocation: '',
+    arrivalLocation: '',
+    status: 'dependent',
+    truck: ''
+  };
+  const [travel, setTravel] = useState({ initTravel });
+  const [truck, setTruck] = useState([{}]);
+  const [warehouse, setWarehouse] = useState([{}]);
+  const current = useRef();
+  const [status, setStatus] = useState({
+    type: '',
+    messagem: ''
+  });
 
   function handleChange(e) {
-    return setTruck((truck) => ({ ...truck, [e.target.name]: e.target.value }));
+    return setTravel((travel) => ({ ...travel, [e.target.name]: e.target.value }));
   }
   function handleSubmit(e) {
     e.preventDefault();
-  }
-  /* 
-        "departureDate":"2022-01-22",
-        "arrivalDate": "2022-01-24",
-        "departureTime": "12h",
-        "arrivalTime": "18h",
-        "departureLocation": "124",
-        "arrivalLocation": "124",
-        "status": "completed",
-        "truck": "0c6c8263-5653-42dd-acc8-896a15f68d7e"
- */
 
-  const city = [
-    {
-      value: 'Algarve'
-    },
-    {
-      value: 'Viana'
-    },
-    {
-      value: 'Espinho'
-    },
-    {
-      value: 'Porto'
-    }
-  ];
-  const options = [
-    {
-      enroll: '12-32-23'
-    },
-    {
-      enroll: 'da-ad-ad'
-    },
-    {
-      enroll: 'DA-AS-AS'
-    },
-    {
-      enroll: 'LA-BV-UH'
-    }
-  ];
+    travelSave(travel)
+      .then((response) => {
+        console.log(truck);
+        console.log(response.data.truck);
+        if (response.data.erro) {
+          setStatus({
+            type: 'erro',
+            messagem: response.data.messagem
+          });
+        } else {
+          setStatus({
+            type: 'success',
+            messagem: response.data.messagem
+          });
+        }
+      })
+      .catch(() => {
+        setStatus({
+          type: 'erro',
+          messagem: 'Err: Try later!'
+        });
+      });
+  }
+  const TruckAndStoreData = () => {
+    truckGetAll()
+      .then((truck) => {
+        setTruck(truck);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const WarehouseAndStoreData = () => {
+    warehouseGetAll()
+      .then((warehouse) => {
+        setWarehouse(warehouse);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    TruckAndStoreData();
+    WarehouseAndStoreData();
+  }, []);
+
   return (
     <>
+      {status.type === 'erro' ? <AlertDismissible /> : <SuccessCompoment />}
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Form.Group as={Col}>
@@ -74,9 +101,9 @@ const PlaneamentoCompoment = ({ idTruck }) => {
               onChange={handleChange}
               type="text"
               placeholder="Enter arrivalLocation">
-              {options.map((option) => (
-                <option key={option.toString()} value={option.value}>
-                  {option.enroll}
+              {warehouse.map((option, i) => (
+                <option key={i} value={option.WarehouseIdentifier}>
+                  {option.Designation}
                 </option>
               ))}
             </Form.Control>
@@ -89,9 +116,9 @@ const PlaneamentoCompoment = ({ idTruck }) => {
               onChange={handleChange}
               type="text"
               placeholder="Enter arrivalLocation">
-              {options.map((option) => (
-                <option key={option.toString()} value={option.value}>
-                  {option.enroll}
+              {warehouse.map((option, i) => (
+                <option key={i} value={option.WarehouseIdentifier}>
+                  {option.Designation}
                 </option>
               ))}
             </Form.Control>
@@ -104,8 +131,8 @@ const PlaneamentoCompoment = ({ idTruck }) => {
               onChange={handleChange}
               type="text"
               placeholder="Enter arrivalLocation">
-              {options.map((option) => (
-                <option key={option.toString()} value={option.value}>
+              {truck.map((option, i) => (
+                <option key={i} value={option.idTruck}>
                   {option.enroll}
                 </option>
               ))}

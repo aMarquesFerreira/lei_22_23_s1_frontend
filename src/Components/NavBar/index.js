@@ -36,6 +36,9 @@ function NavbarComponent() {
           <Nav.Link as={Link} to="/truck">
             Truck
           </Nav.Link>
+          <Nav.Link as={Link} to="/planeamento">
+            Travel
+          </Nav.Link>
           <Nav.Link as={Link} to="/warehouse">
             Warehouse
           </Nav.Link>
