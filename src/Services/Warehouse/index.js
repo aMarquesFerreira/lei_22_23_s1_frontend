@@ -16,10 +16,7 @@ export async function warehouseGetAll() {
 
 export async function warehouseDelete(identifier) {
     try {
-        const response = await axios.get(`${DOTNET_BASE_URL}/warehouses/${identifier}`)
-
-        return response.data;
-        //return response.status(200).json();
+        return await axios.get(`${DOTNET_BASE_URL}/warehouses/${identifier}`)
     } catch (err) {
         throw new Error(err);
     }

@@ -13,12 +13,16 @@ export default function Warehouse() {
   const [warehouses, setWarehouses] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const handleDeletewarehouse = (id) => {
+    warehouseDelete(id).then(() => {
+      setWarehouses(warehouses.filter((e) => e._id !== id));
+    });
     setLoading(true);
+    console.log(id);
     setTimeout(() => {
       warehouseDelete(id).then((res) => {
         if (res.status === 200) {
           setWarehouses(
-            warehouses.filter((warehouse) => warehouse.warehouseIdentifier.identifier !== id)
+            warehouses.filter((warehouse) => { warehouse.WarehouseIdentifier.identifier !== id })
           );
           setLoading(false);
         }

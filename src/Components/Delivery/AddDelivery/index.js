@@ -3,25 +3,48 @@ import { Form, Button, Col, Row } from 'react-bootstrap';
 import './style.css';
 import { deliverySave } from './../../../Services/Delivery';
 import SuccessCompoment from './../../Alerts/Success';
-import AlertDismissible  from './../../Alerts/danger';
+import AlertDismissible from './../../Alerts/danger';
 const AddDelivery = () => {
   const [status, setStatus] = useState({
     type: '',
     messagem: ''
   });
   const initDelivery = {
-    identifier: '',
-    deliveryDate: '',
-    deliveryWeight: '',
-    deliveryWarehouse: '',
-    timeLoadTruck: '',
-    timeUnloadTruck: '',
+    DeliveryIdentifier: {
+      Identifier: '456'
+    },
+    DeliveryDate: '20221005',
+    DeliveryWeight: {
+      DeliveryWeight: '1000'
+    },
+    DeliveryWarehouse: '111',
+    TimeLoadTruck: {
+      Time: '60'
+    },
+    TimeUnloadTruck: {
+      Time: '60'
+    }
   };
   const [delivery, setDelivery] = useState(initDelivery);
 
-  const handleChange = (e) => {
-    setDelivery((delivery) => ({ ...delivery, [e.target.name]: e.target.value }));
-  };
+  function handleDeliveryIdentifierChange(e) {
+    delivery.DeliveryIdentifier.identifier = e.target.value;
+  }
+  function handleDeliveryDateChange(e) {
+    delivery.DeliveryDate = e.target.value;
+  }
+  function handleDeliveryWeightChange(e) {
+    delivery.DeliveryWeight.DeliveryWeight = e.target.value;
+  }
+  function handleDeliveryWarehouseChange(e) {
+    delivery.DeliveryWarehouse.TimeLoadTruck = e.target.value;
+  }
+  function handleTimeUnloadTruckChange(e) {
+    delivery.TimeUnloadTruck.Time = e.target.value;
+  }
+  function handleTimeLoadTruckChange(e) {
+    delivery.TimeLoadTruck.Time = e.target.value;
+  }
 
   const handleSubmit = () => {
     const headers = {
@@ -36,7 +59,6 @@ const AddDelivery = () => {
             type: 'erro',
             messagem: response.data.messagem
           });
-
         } else {
           setStatus({
             type: 'success',
@@ -60,8 +82,8 @@ const AddDelivery = () => {
           <Form.Group as={Col}>
             <Form.Label htmlFor="identifier">Identifier</Form.Label>
             <Form.Control
-              name="identifier"
-              onChange={handleChange}
+              name={delivery.DeliveryIdentifier.identifier}
+              onChange={handleDeliveryIdentifierChange}
               type="text"
               placeholder="Enter identifier"
             />
@@ -69,8 +91,8 @@ const AddDelivery = () => {
           <Form.Group as={Col}>
             <Form.Label htmlFor="deliveryDate">DeliveryDate</Form.Label>
             <Form.Control
-              name="deliveryDate"
-              onChange={handleChange}
+              name={delivery.DeliveryDate}
+              onChange={handleDeliveryDateChange}
               type="text"
               placeholder="Enter delivery date"
             />
@@ -78,8 +100,8 @@ const AddDelivery = () => {
           <Form.Group as={Col}>
             <Form.Label htmlFor="deliveryWeight">DeliveryWeight</Form.Label>
             <Form.Control
-              name="deliveryWeight"
-              onChange={handleChange}
+              name={delivery.DeliveryWeight.DeliveryWeight}
+              onChange={handleDeliveryWeightChange}
               type="number"
               placeholder="Enter delivery weight"
             />
@@ -89,8 +111,8 @@ const AddDelivery = () => {
           <Form.Group as={Col}>
             <Form.Label htmlFor="deliveryWarehouse">DeliveryWarehouse</Form.Label>
             <Form.Control
-              name="deliveryWarehouse"
-              onChange={handleChange}
+              name={delivery.DeliveryWarehouse.TimeLoadTruck}
+              onChange={handleDeliveryWarehouseChange}
               type="number"
               placeholder="Enter delivery warehouse"
             />
@@ -98,8 +120,8 @@ const AddDelivery = () => {
           <Form.Group as={Col}>
             <Form.Label htmlFor="timeLoadTruck">TimeLoadTruck</Form.Label>
             <Form.Control
-              name="timeLoadTruck"
-              onChange={handleChange}
+              name={delivery.TimeUnloadTruck.Time}
+              onChange={handleTimeUnloadTruckChange}
               type="number"
               placeholder="Enter time load truck"
             />
@@ -107,8 +129,8 @@ const AddDelivery = () => {
           <Form.Group as={Col}>
             <Form.Label htmlFor="timeUnloadTruck">TimeUnloadTruck</Form.Label>
             <Form.Control
-              name="timeUnloadTruck"
-              onChange={handleChange}
+              name={delivery.TimeLoadTruck.Time}
+              onChange={handleTimeLoadTruckChange}
               type="number"
               placeholder="Enter time unload truck"
             />

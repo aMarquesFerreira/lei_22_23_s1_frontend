@@ -30,15 +30,14 @@ export async function deliveryGetById(identifier) {
     }
 }
 
-export async function deliverySave(delivery) {
+export async function deliverySave(delivery, options) {
     try {
         const response = await axios.post(`${DOTNET_BASE_URL}/deliverys`, delivery, {
             headers: {
                 'Content-Type': 'application/json',
             }
         });
-        return response.data;
-        //return response.status(200).json();
+        return response.status(201).json();
     } catch (err) {
         throw new Error(err);
     }

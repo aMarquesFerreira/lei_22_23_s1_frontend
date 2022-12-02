@@ -36,22 +36,12 @@ function NavbarComponent() {
           <Nav.Link as={Link} to="/truck">
             Truck
           </Nav.Link>
-          <NavDropdown title="Warehouse" id="collasible-nav-dropdown">
-            <NavDropdown.Item as={Link} to="/warehouse">
-              List warehouse
-            </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/warehouse/new">
-              Create warehouse
-            </NavDropdown.Item>
-          </NavDropdown>
-          <NavDropdown title="Delivery" id="collasible-nav-dropdown">
-            <NavDropdown.Item as={Link} to="/delivery">
-              List delivery
-            </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/warehouse/new">
-              Create delivery
-            </NavDropdown.Item>
-          </NavDropdown>
+          <Nav.Link as={Link} to="/warehouse">
+            Warehouse
+          </Nav.Link>
+          <Nav.Link as={Link} to="/delivery">
+            Delivery
+          </Nav.Link>
         </Nav>
         <Form inline className="mx-3">
           <ButtonGroup>
