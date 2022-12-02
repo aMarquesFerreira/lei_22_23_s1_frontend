@@ -1,7 +1,12 @@
-
-
-.section-map-svg,
-#root {
+.section-map-svg {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
+    overscroll-behavior-y: none;
+    color: black;
+    -webkit-font-smoothing: antialiased;
+    background: #272727;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -10,21 +15,3 @@
     user-select: none;
     overflow: hidden;
 }
-
-#root {
-    overflow: auto;
-}
-
-.section-map-svg {
-    width: '100%';
-    height: '100vh';
-    position: fixed;
-    overflow: hidden;
-    overscroll-behavior-y: none;
-    font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial,
-        sans-serif;
-    color: black;
-    -webkit-font-smoothing: antialiased;
-    background: #272727;
-}
-
