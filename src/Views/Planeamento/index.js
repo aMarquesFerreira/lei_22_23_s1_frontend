@@ -12,6 +12,11 @@ export default function Planeamento() {
         <Jumbotron className="text-center">
           <Container>
             <h1 className="jumbotron-heading">Create travel</h1>
+            <p className="lead text-muted">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies purus velit. Ut
+              et viverra mi, vel eleifend dolor. Vestibulum ipsum dui, posuere sit amet ligula a,
+              finibus accumsan sapien
+            </p>
           </Container>
         </Jumbotron>
       </header>
