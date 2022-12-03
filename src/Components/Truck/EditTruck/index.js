@@ -18,16 +18,16 @@ const TruckDetails = () => {
     batteryChargingTime: ''
   };
   const [truck, setTruck] = useState({ initTruck });
-  const [enroll, setEnroll] = useState("");
-  const [year, setYear] = useState("");
-  const [month, setMonth] = useState("");
-  const [tare, setTare] = useState("");
-  const [batteryCapacity, setBatteryCapacity] = useState("");
-  const [totalBatterycapacity, setTotalBatterycapacity] = useState("");
-  const [autonomyWithMaximumLoad, setAutonomyWithMaximumLoad] = useState("");
-  const [batteryChargingTime, setBatteryChargingTime] = useState("");
-  
-  
+  const [editTruck, setEditTruck] = useState({});
+  const [enroll, setEnroll] = useState('');
+  const [year, setYear] = useState('');
+  const [month, setMonth] = useState('');
+  const [tare, setTare] = useState('');
+  const [batteryCapacity, setBatteryCapacity] = useState('');
+  const [totalBatterycapacity, setTotalBatterycapacity] = useState('');
+  const [autonomyWithMaximumLoad, setAutonomyWithMaximumLoad] = useState('');
+  const [batteryChargingTime, setBatteryChargingTime] = useState('');
+
   useLayoutEffect(() => {
     truckGetById(id)
       .then((data) => setTruck(data))
@@ -43,28 +43,16 @@ const TruckDetails = () => {
   });
 
   const handleChange = (e) => {
-    setTruck((truck) => ({ ...truck, [e.target.name]: e.target.value }));
+    setEditTruck((editTruck) => ({ ...editTruck, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const headers = {
       'Content-Type': 'application/json'
     };
-    const formData = new FormData();
-    formData.append('enroll', truck.enroll);
-    formData.append('year', truck.year);
-    formData.append('month', truck.month);
-    formData.append('tare', truck.tare);
-    formData.append('batteryCapacity', truck.batteryCapacity);
-    formData.append('totalBatterycapacity', truck.totalBatterycapacity);
-    formData.append('AutonomyWithMaximumLoad', truck.AutonomyWithMaximumLoad);
-    formData.append('batteryChargingTime', truck.batteryChargingTime);
-      
-    console.log(truck.enroll + truck.AutonomyWithMaximumLoad);
+
     setSuccess(true);
-    truckUpdate(id,  formData, headers
-    )
+    truckUpdate(id, editTruck, headers)
       .then((response) => {
         console.log(truck);
         console.log(response.data.truck);

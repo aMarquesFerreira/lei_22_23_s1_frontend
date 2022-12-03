@@ -48,12 +48,12 @@ export async function truckUpdate(id, truck, options) {
         if (!id) {
             throw new Error('Invalid input data provided.');
         }
-        const response = await axios.post(`${API_BASE_URL}/${id}/truck/`, truck, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
+        const response = await axios.put(`${API_BASE_URL}/vehicles/${id}/truck/`, truck, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
-        return response.status(200).json();
+        return response.data;
     } catch (err) {
         throw new Error(err);
     }
