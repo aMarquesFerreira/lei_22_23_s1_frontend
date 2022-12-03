@@ -1,12 +1,16 @@
-﻿import { useState, useEffect, useLayoutEffect } from 'react';
+﻿import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import SuccessCompoment from '../../Alerts/Success';
 import AlertDismissible from '../../Alerts/danger';
 import { Form, Button, Col, Row } from 'react-bootstrap';
-import { deliveryGetById, deliveryUpdate } from '../../../Services/Delivery';
+import { deliveryUpdate } from '../../../Services/Delivery';
 
 const DeliveryDetails = () => {
     const { id } = useParams();
+    const [status, setStatus] = useState({
+        type: '',
+        messagem: ''
+    });
     const initDelivery = {
         DeliveryIdentifier: {
             identifier: ''
@@ -27,24 +31,8 @@ const DeliveryDetails = () => {
             timeUnloadTruck: ''
         }
     };
-    let [delivery, setDelivery] = useState(initDelivery);
-
-
-
-    useLayoutEffect(() => {
-        deliveryGetById(id)
-            .then((data) => setDelivery(data))
-            .catch((err) => console.log(err));
-        return () => {
-            window.scrollTo(0, 0);
-        };
-    }, [id]);
-    const [success, setSuccess] = useState(false);
-    const [status, setStatus] = useState({
-        type: '',
-        messagem: ''
-    });
-
+    const [delivery, setDelivery] = useState(initDelivery);
+    
     function handleDeliveryIdentifierChange(e) {
         delivery.DeliveryIdentifier.identifier = e.target.value;
     }
@@ -67,7 +55,7 @@ const DeliveryDetails = () => {
         delivery.TimeUnloadTruck.timeUnloadTruck = e.target.value;
     }
 
-
+    console.log(delivery);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -76,7 +64,7 @@ const DeliveryDetails = () => {
             'Content-Type': 'application/json'
         };
 
-        deliveryUpdate(delivery.DeliveryIdentifier.identifier, delivery, headers)
+        deliveryUpdate(id, delivery, headers)
             .then((response) => {
                 console.log(delivery);
                 console.log(response.data.delivery);
@@ -99,51 +87,7 @@ const DeliveryDetails = () => {
                 });
             });
     };
-
-    /*const handleSubmit = (e) => {
-       e.preventDefault();
-       const headers = {
-         'Content-Type': 'application/json'
-       };
-       const formData = new FormData();
-       formData.append('enroll', truck.enroll);
-       formData.append('year', truck.year);
-       formData.append('month', truck.month);
-       formData.append('tare', truck.tare);
-       formData.append('batteryCapacity', truck.batteryCapacity);
-       formData.append('totalBatterycapacity', truck.totalBatterycapacity);
-       formData.append('AutonomyWithMaximumLoad', truck.AutonomyWithMaximumLoad);
-       formData.append('batteryChargingTime', truck.batteryChargingTime);
-         
-       console.log(truck.enroll + truck.AutonomyWithMaximumLoad);
-       setSuccess(true);
-       truckUpdate(id,  formData, headers
-       )
-         .then((response) => {
-           console.log(truck);
-           console.log(response.data.truck);
-           if (response.data.erro) {
-             setStatus({
-               type: 'erro',
-               messagem: response.data.messagem
-             });
-           } else {
-             setStatus({
-               type: 'success',
-               messagem: response.data.messagem
-             });
-           }
-         })
-         .catch(() => {
-           setStatus({
-             type: 'erro',
-             messagem: 'Err: Try later!'
-           });
-         });
-       setSuccess(false);
-       window.scrollTo(0, 0);
-     };*/
-
+    
     return (
         <section>
             {status.type === 'erro' ? <AlertDismissible /> : <SuccessCompoment />}
@@ -155,7 +99,7 @@ const DeliveryDetails = () => {
                             name={delivery.DeliveryIdentifier.identifier}
                             onChange={handleDeliveryIdentifierChange}
                             type="text"
-                            placeholder={delivery.DeliveryIdentifier.identifier}
+                            placeholder={"Enter Identifier"}
                         />
                     </Form.Group>
                     <Form.Group as={Col}>
@@ -164,7 +108,7 @@ const DeliveryDetails = () => {
                             name={delivery.DeliveryDate.deliveryDate}
                             onChange={handleDeliveryDateChange}
                             type="date"
-                            placeholder={delivery.DeliveryDate.deliveryDate}
+                            placeholder={"Select date"}
                         />
                     </Form.Group>
                     <Form.Group as={Col}>
@@ -173,7 +117,7 @@ const DeliveryDetails = () => {
                             name={delivery.DeliveryWeight.deliveryWeight}
                             onChange={handleDeliveryWeightChange}
                             type="number"
-                            placeholder={delivery.DeliveryWeight.deliveryWeight}
+                            placeholder={"Select weight"}
                         />
                     </Form.Group>
                 </Row>
@@ -184,7 +128,7 @@ const DeliveryDetails = () => {
                             name={delivery.DeliveryWarehouse.deliveryWarehouse}
                             onChange={handleDeliveryWarehouseChange}
                             type="number"
-                            placeholder={delivery.DeliveryWarehouse.deliveryWarehouse}
+                            placeholder={"Select Warehouse"}
                         />
                     </Form.Group>
                     <Form.Group as={Col}>
@@ -193,7 +137,7 @@ const DeliveryDetails = () => {
                             name={delivery.TimeLoadTruck.timeLoadTruck}
                             onChange={handleTimeLoadTruckChange}
                             type="number"
-                            placeholder={delivery.TimeLoadTruck.timeLoadTruck}
+                            placeholder={"Select time to load truck"}
                         />
                     </Form.Group>
                     <Form.Group as={Col}>
@@ -202,7 +146,7 @@ const DeliveryDetails = () => {
                             name={delivery.TimeUnloadTruck.timeUnloadTruck}
                             onChange={handleTimeUnloadTruckChange}
                             type="number"
-                            placeholder={delivery.TimeUnloadTruck.timeUnloadTruck}
+                            placeholder={"Select Time to unload Truck"}
                         />
                     </Form.Group>
                 </Row>

@@ -4,6 +4,7 @@ import { warehouseUpdate } from './../../../Services/Warehouse';
 import SuccessCompoment from './../../Alerts/Success';
 import AlertDismissible from './../../Alerts/danger';
 import { useParams } from 'react-router-dom';
+
 const WarehouseDetails = () => {
   const { id } = useParams();
   const [status, setStatus] = useState({

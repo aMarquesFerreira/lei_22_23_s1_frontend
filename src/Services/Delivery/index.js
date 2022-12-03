@@ -50,7 +50,7 @@ export async function deliveryUpdate(identifier, delivery) {
         }
         console.log("from server" + " "+identifier.data);
         console.log(delivery);
-        const response = await axios.post(`${DOTNET_BASE_URL}/deliverys/${identifier}`, delivery, {
+        const response = await axios.put(`${DOTNET_BASE_URL}/deliverys/${identifier}`, delivery, {
             headers: {
                 'Content-Type': 'application/json',
             },
