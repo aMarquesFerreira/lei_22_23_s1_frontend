@@ -15,12 +15,12 @@ const ListDelivery = (props) => {
 
           <td>
             <button
-              onClick={() => props.handleUpdatetruck(delivery.deliveryIdentifier)}
+              onClick={() => props.handleUpdateDelivery(delivery.deliveryIdentifier.identifier)}
               className="delete">
               <FontAwesomeIcon icon={faPencil} />
             </button>
             <button
-              onClick={() => props.handleDeletetruck(delivery.deliveryIdentifier)}
+              onClick={() => props.handleDeleteDelivery(delivery.deliveryIdentifier.identifier)}
               className="update">
               <FontAwesomeIcon icon={faTrash} />
             </button>

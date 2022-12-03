@@ -31,7 +31,7 @@ export default function Warehouse() {
   };
 
   const handleUpdatewarehouse = (id) => {
-    navigation(`/warehouse/edit/${identifier}`);
+    navigation(`/warehouse/edit/${id}`);
   };
 
   useEffect(() => {
@@ -108,8 +108,8 @@ export default function Warehouse() {
                 <tbody>
                   <ListWarehouse
                     warehouses={warehouses}
-                    handleDeletewarehouse={handleDeletewarehouse}
                     handleUpdatewarehouse={handleUpdatewarehouse}
+                    handleDeletewarehouse={handleDeletewarehouse}
                   />
                 </tbody>
               </table>

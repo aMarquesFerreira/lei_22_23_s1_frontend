@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DOTNET_BASE_URL } from '../../Config/config'
+import { DOTNET_BASE_URL, DOTNET_BASE_URL2} from '../../Config/config'
 
 
 export async function warehouseGetAll() {
@@ -24,7 +24,8 @@ export async function warehouseDelete(identifier) {
 export async function warehouseGetById(identifier) {
     try {
         const response = await axios.get(`${DOTNET_BASE_URL}/warehouses/${identifier}`)
-        if (!response.ok) {
+        if (response.ok === false) {
+            //log(response.data);
             throw new Error('Failed to axios get.');
         }
         return response.data;
@@ -53,7 +54,9 @@ export async function warehouseUpdate(identifier, warehouse) {
         if (!identifier) {
             throw new Error('Invalid input data provided.');
         }
-        const response = await axios.post(`${DOTNET_BASE_URL}/warehouses/${identifier}`, warehouse, {
+        console.log("from server" + " "+identifier.data);
+        console.log(warehouse);
+        const response = await axios.put(`${DOTNET_BASE_URL}/warehouses/${identifier}`, warehouse, {
             headers: {
                 'Content-Type': 'application/json',
             },

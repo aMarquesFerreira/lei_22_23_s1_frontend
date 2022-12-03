@@ -1,7 +1,7 @@
 ﻿import { Container, Row, Jumbotron } from 'react-bootstrap';
 import NavbarComponent from '../../../Components/NavBar';
 import FooterCompoment from '../../../Components/Footer';
-import EditTruck from '../../../Components/Truck/EditTruck';
+import EditDelivery from "../../../Components/Delivery/EditDelivery";
 
 export default function NewDelivery() {
     return (
