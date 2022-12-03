@@ -43,20 +43,18 @@ export async function deliverySave(delivery, options) {
     }
 }
 
-export async function deliveryUpdate(identifier, delivery) {
+export async function deliveryUpdate(identifier, delivery , options) {
     try {
         if (!identifier) {
             throw new Error('Invalid input data provided.');
         }
-        console.log("from server" + " "+identifier.data);
         console.log(delivery);
         const response = await axios.put(`${DOTNET_BASE_URL}/deliverys/${identifier}`, delivery, {
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        return response.data;
-        //return response.status(200).json();
+        return response.status(200).json();
     } catch (err) {
         throw new Error(err);
     }

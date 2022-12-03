@@ -30,7 +30,7 @@ export default function Delivery(props) {
 
   const handleUpdateDelivery = (id) => {
     if (!id === undefined) return null;
-    navigation(`/edit/${id}`);
+    navigation(`./edit/${id}`);
   };
 
   if (isLoading) {

@@ -7,7 +7,7 @@ import { warehouseGetAll } from '../../Services/Warehouse';
 import { travelSave } from '../../Services/Travel';
 import SuccessCompoment from './../../Components/Alerts/Success';
 import AlertDismissible from './../../Components/Alerts/danger';
-import ListWarehouseOptions from './../../Components/Planeamento/optionsDate.planiamento';
+import ListWarehouseOptions from './optionsDate.planeamento';
 import Map from '../Map'
 const PlaneamentoCompoment = () => {
   const initTravel = {
