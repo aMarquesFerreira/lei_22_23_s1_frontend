@@ -1,12 +1,15 @@
-import { useState, useEffect, useLayoutEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import SuccessCompoment from '../../Alerts/Success';
-import AlertDismissible from '../../Alerts/danger';
+import { useState } from 'react';
 import { Form, Button, Col, Row } from 'react-bootstrap';
-import { warehouseGetById, warehouseUpdate } from '../../../Services/Warehouse';
-
+import { warehouseUpdate } from './../../../Services/Warehouse';
+import SuccessCompoment from './../../Alerts/Success';
+import AlertDismissible from './../../Alerts/danger';
+import { useParams } from 'react-router-dom';
 const WarehouseDetails = () => {
   const { id } = useParams();
+  const [status, setStatus] = useState({
+    type: '',
+    messagem: ''
+  });
   const initWarehouse = {
     WarehouseIdentifier: {
       identifier: ''
@@ -29,26 +32,10 @@ const WarehouseDetails = () => {
       whAltitude: ''
     }
   };
-  //const [warehouse, setWarehouse] = useState({ initWarehouse });
   const [warehouse, setWarehouse] = useState(initWarehouse);
-  
-  
-  
-  useLayoutEffect(() => {
-    warehouseGetById(id)
-      .then((data) => setWarehouse(data))
-      .catch((err) => console.log(err));
-    return () => {
-      window.scrollTo(0, 0);
-    };
-  }, [id]);
-  const [success, setSuccess] = useState(false);
-  const [status, setStatus] = useState({
-    type: '',
-    messagem: ''
-  });
 
   function handleWarehouseIdentifierChange(e) {
+    //console.log(id);
     warehouse.WarehouseIdentifier.identifier = e.target.value;
   }
 
@@ -83,7 +70,7 @@ const WarehouseDetails = () => {
     warehouse.Altitude.whAltitude = e.target.value;
   }
 
-
+  console.log(warehouse);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -91,8 +78,7 @@ const WarehouseDetails = () => {
     const headers = {
       'Content-Type': 'application/json'
     };
-    
-    warehouseUpdate(warehouse.WarehouseIdentifier.identifier, warehouse, headers)
+    warehouseUpdate(id, warehouse, headers)
       .then((response) => {
         console.log(warehouse);
         console.log(response.data.warehouse);
@@ -116,50 +102,6 @@ const WarehouseDetails = () => {
       });
   };
 
- /*const handleSubmit = (e) => {
-    e.preventDefault();
-    const headers = {
-      'Content-Type': 'application/json'
-    };
-    const formData = new FormData();
-    formData.append('enroll', truck.enroll);
-    formData.append('year', truck.year);
-    formData.append('month', truck.month);
-    formData.append('tare', truck.tare);
-    formData.append('batteryCapacity', truck.batteryCapacity);
-    formData.append('totalBatterycapacity', truck.totalBatterycapacity);
-    formData.append('AutonomyWithMaximumLoad', truck.AutonomyWithMaximumLoad);
-    formData.append('batteryChargingTime', truck.batteryChargingTime);
-      
-    console.log(truck.enroll + truck.AutonomyWithMaximumLoad);
-    setSuccess(true);
-    truckUpdate(id,  formData, headers
-    )
-      .then((response) => {
-        console.log(truck);
-        console.log(response.data.truck);
-        if (response.data.erro) {
-          setStatus({
-            type: 'erro',
-            messagem: response.data.messagem
-          });
-        } else {
-          setStatus({
-            type: 'success',
-            messagem: response.data.messagem
-          });
-        }
-      })
-      .catch(() => {
-        setStatus({
-          type: 'erro',
-          messagem: 'Err: Try later!'
-        });
-      });
-    setSuccess(false);
-    window.scrollTo(0, 0);
-  };*/
-
   return (
     <section>
       {status.type === 'erro' ? <AlertDismissible /> : <SuccessCompoment />}
@@ -171,7 +113,7 @@ const WarehouseDetails = () => {
               name={warehouse.WarehouseIdentifier.identifier}
               onChange={handleWarehouseIdentifierChange}
               type="text"
-              placeholder={warehouse.WarehouseIdentifier.identifier}
+              placeholder="Enter identifier"
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -180,7 +122,7 @@ const WarehouseDetails = () => {
               name={warehouse.Designation.warehouseDesignation}
               onChange={handleDesignationChange}
               type="text"
-              placeholder={warehouse.Designation.warehouseDesignation}
+              placeholder="Enter designation"
             />
           </Form.Group>
         </Row>
@@ -191,7 +133,7 @@ const WarehouseDetails = () => {
               name={warehouse.Address.street}
               onChange={handleAddressChange}
               type="text"
-              placeholder={warehouse.Address.street}
+              placeholder="Enter street"
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -200,7 +142,7 @@ const WarehouseDetails = () => {
               name={warehouse.Address.doorNumber}
               onChange={handleAddressdoorNumberChange}
               type="number"
-              placeholder={warehouse.Address.doorNumber}
+              placeholder="Enter doorNumber"
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -209,7 +151,7 @@ const WarehouseDetails = () => {
               name={warehouse.Address.zipCode}
               onChange={handleAddressZipCodeChange}
               type="text"
-              placeholder={warehouse.Address.zipCode}
+              placeholder="Enter zip code"
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -218,7 +160,7 @@ const WarehouseDetails = () => {
               name={warehouse.Address.city}
               onChange={handleAddressCityChange}
               type="text"
-              placeholder={warehouse.Address.city}
+              placeholder="Enter city"
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -227,7 +169,7 @@ const WarehouseDetails = () => {
               onChange={handleAddressdoorCountryChange}
               name={warehouse.Address.country}
               type="text"
-              placeholder={warehouse.Address.country}
+              placeholder="Enter country"
             />
           </Form.Group>
         </Row>
@@ -238,7 +180,7 @@ const WarehouseDetails = () => {
               name={warehouse.Coordinates.latitude}
               onChange={handleCoordinatesChange}
               type="text"
-              placeholder={warehouse.Coordinates.latitude}
+              placeholder="Enter latitude"
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -247,7 +189,7 @@ const WarehouseDetails = () => {
               name={warehouse.Coordinates.longitude}
               onChange={handleCoordinatesLongitudeChange}
               type="text"
-              placeholder={warehouse.Coordinates.longitude}
+              placeholder="Enter longitude"
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -256,7 +198,7 @@ const WarehouseDetails = () => {
               name={warehouse.Altitude.whAltitude}
               onChange={handleAltitudeChange}
               type="number"
-              placeholder={warehouse.Altitude.whAltitude}
+              placeholder="Enter whAltitude"
             />
           </Form.Group>
         </Row>

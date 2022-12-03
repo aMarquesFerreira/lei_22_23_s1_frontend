@@ -56,7 +56,7 @@ export async function warehouseUpdate(identifier, warehouse) {
         }
         console.log("from server" + " "+identifier.data);
         console.log(warehouse);
-        const response = await axios.post(`${DOTNET_BASE_URL}/warehouses/${identifier}`, warehouse, {
+        const response = await axios.put(`${DOTNET_BASE_URL}/warehouses/${identifier}`, warehouse, {
             headers: {
                 'Content-Type': 'application/json',
             },
