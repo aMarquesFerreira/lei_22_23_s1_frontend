@@ -4,7 +4,6 @@ import Login from './Components/Login';
 import SignUp from './Components/SignUp';
 import Truck from './Views/Truck';
 import About from './Views/About';
-import Map from './Views/Map';
 import NewTruck from './Views/Truck/AddTruck';
 import EditTruck from './Views/Truck/EditTruck';
 import Delivery from "./Views/Delivery";
@@ -28,7 +27,6 @@ export default function App() {
         <Route exact path="/truck" element={<Truck />} />
         <Route exact path="/truck/new" element={<NewTruck />} />
         <Route exact path="/truck/edit/:id" element={<EditTruck />} />
-        <Route exact path="/map" element={<Map />} />
         <Route exact path="/delivery" element={<Delivery />}></Route>
         <Route exact path="/delivery/edit/:id" element={<EditDelivery />} />
         <Route exact path="/delivery/new" element={<NewDelivery />} />

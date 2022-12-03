@@ -43,12 +43,12 @@ export async function travelSave(travel) {
   }
 }
 
-export async function travelUpdate(id, travel) {
+export async function travelUpdate(id, travel, options) {
   try {
     if (!id) {
       throw new Error('Invalid input data provided.');
     }
-    const response = await axios.post(`${API_BASE_URL}/travel/${id}/way`, id, travel, {
+    const response = await axios.put(`${API_BASE_URL}/travel/${id}/way`, travel, {
       headers: {
         'Content-Type': 'application/json'
       }

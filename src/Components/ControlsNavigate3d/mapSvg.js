@@ -8,7 +8,7 @@ import MapCell from './mapCell';
 
 export default function MapSvg() {
 
-    const { paths } = useLoader(SVGLoader,'assets/svg/pt.svg');
+  const { paths } = useLoader(SVGLoader, 'assets/svg/pt.svg');
     const [map, setMap] = useState(null);
     const mapRef = useRef(null);
 

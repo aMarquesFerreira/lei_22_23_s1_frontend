@@ -8,6 +8,7 @@ import { travelSave } from '../../Services/Travel';
 import SuccessCompoment from './../../Components/Alerts/Success';
 import AlertDismissible from './../../Components/Alerts/danger';
 import ListWarehouseOptions from './../../Components/Planeamento/optionsDate.planiamento';
+import Map from '../Map'
 const PlaneamentoCompoment = () => {
   const initTravel = {
     departureDate: '',
@@ -16,7 +17,7 @@ const PlaneamentoCompoment = () => {
     arrivalTime: '',
     departureLocation: '',
     arrivalLocation: '',
-    status: 'cancelled',
+    status: '',
     truck: ''
   };
   const [travel, setTravel] = useState(initTravel);
@@ -77,6 +78,7 @@ const PlaneamentoCompoment = () => {
 
   return (
     <>
+      <Map/>
       {status.type === 'erro' ? <AlertDismissible /> : <SuccessCompoment />}
       <Form onSubmit={handleSubmit}>
         <Row>

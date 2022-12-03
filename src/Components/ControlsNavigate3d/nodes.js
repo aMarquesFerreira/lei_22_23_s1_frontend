@@ -50,9 +50,8 @@ export function Nodes({ children }) {
     <context.Provider value={set}>
       <group ref={group}>
         {lines.map((line, index) => (
-          <group key={index}>
+          <group key={index.toLocaleString()}>
             <QuadraticBezierLine
-              key={index}
               {...line}
               color="#000000"
               dashed
@@ -60,7 +59,6 @@ export function Nodes({ children }) {
               gapSize={1}
             />
             <QuadraticBezierLine
-              key={index}
               {...line}
               color="#000000"
               lineWidth={5}
