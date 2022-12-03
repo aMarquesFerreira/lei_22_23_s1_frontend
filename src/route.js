@@ -11,6 +11,7 @@ import Delivery from "./Views/Delivery";
 import NewDelivery from './Views/Delivery/AddDelivery';
 import Warehouse from "./Views/Warehouse";
 import NewWarehouse from './Views/Warehouse/AddWarehouse';
+import EditWarehouse from './Views/Warehouse/EditWarehouse';
 import Planeamento from './Views/Planeamento';
 import Travel from './Views/Planeamento/List'
 
@@ -31,6 +32,7 @@ export default function App() {
         <Route exact path="/delivery/new" element={<NewDelivery />} />
         <Route exact path="/warehouse" element={<Warehouse />} />
         <Route exact path="/warehouse/new" element={<NewWarehouse />} />
+        <Route exact path="/warehouse/edit/:id" element={<EditWarehouse />} />
         <Route exact path="/planeamento/new" element={<Planeamento />} />
         <Route exact path="/planeamento" element={<Travel />} />
       </Routes>
