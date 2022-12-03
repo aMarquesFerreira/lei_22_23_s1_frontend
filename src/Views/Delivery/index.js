@@ -6,7 +6,7 @@ import FooterCompoment from '../../Components/Footer';
 import ListDelivery from '../../Components/Delivery/ListDelivery';
 import { deliveryDelete, deliveryGetAll } from '../../Services/Delivery';
 
-export default function Delivery() {
+export default function Delivery(props) {
   const navigation = useNavigate();
   const [deliverys, setDeliverys] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -26,12 +26,11 @@ export default function Delivery() {
       });
   }, []);
 
-  const handleDeleteDelivery = (id) => {
-
-  };
+  const handleDeleteDelivery = (id) => {};
 
   const handleUpdateDelivery = (id) => {
- 
+    if (!id === undefined) return null;
+    navigation(`/edit/${id}`);
   };
 
   if (isLoading) {
@@ -94,8 +93,8 @@ export default function Delivery() {
                 <tbody>
                   <ListDelivery
                     deliverys={deliverys}
-                    handleDeleteDelivery={handleDeleteDelivery()}
-                    handleUpdateDelivery={handleUpdateDelivery()}
+                    handleDeleteDelivery={handleDeleteDelivery}
+                    handleUpdateDelivery={handleUpdateDelivery}
                   />
                 </tbody>
               </table>
