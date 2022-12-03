@@ -15,7 +15,7 @@ import EditWarehouse from './Views/Warehouse/EditWarehouse';
 import Planeamento from './Views/Planeamento';
 import Travel from './Views/Planeamento/List'
 import EditDelivery from "./Components/Delivery/EditDelivery";
-
+import RedeNetWork from './Views/RedeNetWork';
 
 export default function App() {
   return (
@@ -37,6 +37,7 @@ export default function App() {
         <Route exact path="/planeamento/new" element={<Planeamento />} />
         <Route exact path="/planeamento" element={<Travel />} />
         <Route exact path="/delivery/edit/:id" element={<EditDelivery />} />
+        <Route exact path="/planeamento/redenetwork" element={<RedeNetWork />} />
       </Routes>
     </>
   );

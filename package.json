@@ -10,6 +10,7 @@
     "@react-three/cannon": "^6.5.0",
     "@react-three/drei": "^9.45.0",
     "@react-three/fiber": "^8.9.1",
+    "@react-three/rapier": "^0.11.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.1.3",
