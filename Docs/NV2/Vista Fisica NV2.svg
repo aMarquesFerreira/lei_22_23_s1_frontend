@@ -95,8 +95,8 @@
       /><rect fill="none" x="0" width="253" height="181" y="8" clip-path="url(#clipPath1)"
     /></g
     ><g font-size="11px" transform="translate(148,10)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"
-    ><text x="101" xml:space="preserve" y="16" clip-path="url(#clipPath2)" stroke="none"
-      >Localhost</text
+    ><text x="111" xml:space="preserve" y="16" clip-path="url(#clipPath2)" stroke="none"
+      >Client</text
     ></g
     ><g font-size="11px" transform="translate(194,52)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
     ><rect x="0" width="184" height="100" y="0" clip-path="url(#clipPath4)" stroke="none"
