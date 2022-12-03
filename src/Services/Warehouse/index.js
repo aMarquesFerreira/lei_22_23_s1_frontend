@@ -4,7 +4,7 @@ import { DOTNET_BASE_URL, DOTNET_BASE_URL2 } from '../../Config/config'
 
 export async function warehouseGetAll() {
     try {
-        const response = await axios.get(`${DOTNET_BASE_URL2}/warehouses`);
+        const response = await axios.get(`${DOTNET_BASE_URL}/warehouses`);
 
         return response.data;
     } catch (err) {
@@ -23,7 +23,7 @@ export async function warehouseDelete(identifier) {
 
 export async function warehouseGetById(identifier) {
     try {
-        const response = await axios.get(`${DOTNET_BASE_URL2}/warehouses/${identifier}`)
+        const response = await axios.get(`${DOTNET_BASE_URL}/warehouses/${identifier}`)
         if (response.ok === false) {
             //log(response.data);
             throw new Error('Failed to axios get.');

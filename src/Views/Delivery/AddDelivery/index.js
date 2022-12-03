@@ -13,9 +13,7 @@ export default function NewDelivery() {
                     <Container>
                         <h1 className="jumbotron-heading">Create Delivery</h1>
                         <p className="lead text-muted">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies purus velit. Ut
-                            et viverra mi, vel eleifend dolor. Vestibulum ipsum dui, posuere sit amet ligula a,
-                            finibus accumsan sapien
+                            Insert the right arguments in the boxes down below.
                         </p>
                     </Container>
                 </Jumbotron>

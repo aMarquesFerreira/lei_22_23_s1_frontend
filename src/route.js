@@ -14,6 +14,7 @@ import NewWarehouse from './Views/Warehouse/AddWarehouse';
 import EditWarehouse from './Views/Warehouse/EditWarehouse';
 import Planeamento from './Views/Planeamento';
 import Travel from './Views/Planeamento/List'
+import EditDelivery from "./Components/Delivery/EditDelivery";
 
 
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
         <Route exact path="/warehouse/edit/:id" element={<EditWarehouse />} />
         <Route exact path="/planeamento/new" element={<Planeamento />} />
         <Route exact path="/planeamento" element={<Travel />} />
+        <Route exact path="/delivery/edit/:id" element={<EditDelivery />} />
       </Routes>
     </>
   );
