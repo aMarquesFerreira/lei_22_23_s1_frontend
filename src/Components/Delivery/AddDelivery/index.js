@@ -30,6 +30,7 @@ const AddDelivery = () => {
   function handleDeliveryIdentifierChange(e) {
     delivery.DeliveryIdentifier.identifier = e.target.value;
   }
+  
   function handleDeliveryDateChange(e) {
     delivery.DeliveryDate = e.target.value;
   }
