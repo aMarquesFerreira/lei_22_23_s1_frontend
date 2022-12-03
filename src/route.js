@@ -29,14 +29,14 @@ export default function App() {
         <Route exact path="/truck/new" element={<NewTruck />} />
         <Route exact path="/truck/edit/:id" element={<EditTruck />} />
         <Route exact path="/map" element={<Map />} />
-        <Route exact path="/delivery" element={<Delivery />} />
+        <Route exact path="/delivery" element={<Delivery />}></Route>
+        <Route exact path="/delivery/edit/:id" element={<EditDelivery />} />
         <Route exact path="/delivery/new" element={<NewDelivery />} />
         <Route exact path="/warehouse" element={<Warehouse />} />
         <Route exact path="/warehouse/new" element={<NewWarehouse />} />
         <Route exact path="/warehouse/edit/:id" element={<EditWarehouse />} />
         <Route exact path="/planeamento/new" element={<Planeamento />} />
         <Route exact path="/planeamento" element={<Travel />} />
-        <Route exact path="/delivery/edit/:id" element={<EditDelivery />} />
         <Route exact path="/planeamento/redenetwork" element={<RedeNetWork />} />
       </Routes>
     </>
