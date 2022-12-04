@@ -21,11 +21,14 @@ export async function deliveryDelete(identifier) {
 export async function deliveryGetById(identifier) {
     try {
         const response = await axios.get(`${DOTNET_BASE_URL}/deliverys/${identifier}`);
-        if (!response.ok) {
+        console.log(" response para ok " + response.ok);
+        /*if (!response.ok) {
             throw new Error('Failed to axios get.');
-        }
-        return response.data;
+        }*/
+        console.log("antes do retrun ");
+        return response;
     } catch (err) {
+        console.log("Erro");
         throw new Error(err);
     }
 }
@@ -37,7 +40,8 @@ export async function deliverySave(delivery, options) {
                 'Content-Type': 'application/json',
             }
         });
-        return response.status(201).json();
+        //return response.status(201).json();
+        return response;
     } catch (err) {
         throw new Error(err);
     }
