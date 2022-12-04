@@ -51,13 +51,7 @@ export function Nodes({ children }) {
       <group ref={group}>
         {lines.map((line, index) => (
           <group key={index.toLocaleString()}>
-            <QuadraticBezierLine
-              {...line}
-              color="#000000"
-              dashed
-              dashScale={2.0}
-              gapSize={1}
-            />
+            <QuadraticBezierLine {...line} color="#000000" dashed dashScale={2.0} gapSize={1} />
             <QuadraticBezierLine
               {...line}
               color="#000000"

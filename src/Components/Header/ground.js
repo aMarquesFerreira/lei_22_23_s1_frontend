@@ -30,8 +30,6 @@ export function Ground() {
 
   return (
     <mesh rotation-x={-Math.PI * 0.5} castShadow receiveShadow>
-      <MovingSpot depthBuffer={depthBuffer} color="#0c8cbf" position={[2.285, 10, 1.325]} />
-      <MovingSpot depthBuffer={depthBuffer} color="#b00c3f" position={[2.285, 10, 1.325]} />
       <planeGeometry args={[2000, 2000]} />
       <MeshReflectorMaterial
         envMapIntensity={0}

@@ -7,5 +7,5 @@ export const InstantiateWarehouse = () => {
       set((state) => ({ warehouseIndex: [state.warehouseIndex, [x, y, z]] }))
   }));
   const warehouse = warehouseStore((state) => state.warehouse);
-  //return warehouse.map((coords, index) => <Warehouse key={index} position={coords} />)
+  return warehouse.map((coords, index) => <Warehouse key={index} position={coords} />)
 };
