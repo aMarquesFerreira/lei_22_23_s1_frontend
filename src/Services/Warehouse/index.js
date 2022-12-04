@@ -39,11 +39,14 @@ export async function warehouseSave(warehouse) {
     try {
         console.log('Saving', warehouse);
         const response = await axios.post(`${DOTNET_BASE_URL}/warehouses`, warehouse, {
+            
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        return response.status(201).json();
+        
+        //return response.status(201).json();
+        return response;
     } catch (err) {
         throw new Error(err);
     }
