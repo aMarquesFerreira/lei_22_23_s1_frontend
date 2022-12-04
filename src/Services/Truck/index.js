@@ -37,7 +37,7 @@ export async function truckSave(truck) {
                 'Content-Type': 'application/json'
             }
         });
-        return response.status(201).json();
+        return response;
     } catch (err) {
         throw new Error(err);
     }

@@ -28,7 +28,7 @@ export async function warehouseGetById(identifier) {
             //log(response.data);
             throw new Error('Failed to axios get.');
         }
-        return response.data;
+        return response;
         //return response.status(200).json();
     } catch (err) {
         throw new Error(err);
@@ -64,7 +64,7 @@ export async function warehouseUpdate(identifier, warehouse) {
                 'Content-Type': 'application/json',
             },
         });
-        return response.data;
+        return response;
         //return response.status(200).json();
     } catch (err) {
         throw new Error(err);

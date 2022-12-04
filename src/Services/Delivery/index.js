@@ -58,7 +58,7 @@ export async function deliveryUpdate(identifier, delivery , options) {
                 'Content-Type': 'application/json',
             },
         });
-        return response.status(200).json();
+        return response;
     } catch (err) {
         throw new Error(err);
     }
