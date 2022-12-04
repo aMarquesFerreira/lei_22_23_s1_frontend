@@ -135,7 +135,7 @@ const AddTruck = () => {
             />
           </Form.Group>
         </Row>
-        <Button variant="dark" type="submit">
+        <Button variant="dark" type="submit" data-testid="submitt" >
           Submit
         </Button>
       </Form>
