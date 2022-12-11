@@ -1,13 +1,13 @@
 import axios from 'axios';
 import {API_BASE_URL} from '../../Config/config'
 
-export async function truckGetAll() {
-    try {
-        const response = await axios.get(`${API_BASE_URL}/vehicles/trucks`);
-        return response.data;
-    } catch (err) {
-        throw new Error(err);
-    }
+export async function truckGetAll(signal) {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/vehicles/trucks`, { signal });
+    return response.data;
+  } catch (err) {
+    throw new Error(err);
+  }
 }
 
 export async function truckDelete(id) {

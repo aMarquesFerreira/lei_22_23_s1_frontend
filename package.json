@@ -19,6 +19,7 @@
     "cdbreact": "^1.5.3",
     "drei": "^2.2.21",
     "jest-react": "^0.14.0",
+    "puppeteer": "^19.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.39.3",
@@ -32,11 +33,12 @@
   "scripts": {
     "start": "set PORT=3006 && react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "test": "react-scripts test --testPathIgnorePatterns=.*e2e.test.js",
+    "test:e2e": "react-scripts test --testPathPattern=.*e2e.test.js$"
   },
   "eslintConfig": {
     "extends": [
@@ -71,6 +73,19 @@
     "react-test-renderer": "^18.2.0"
   },
   "jest": {
-    "testEnvironment": "jsdom"
-  }
+    "coverageReporters": [
+      "jest-junit"
+    ]
+  },
+   "env": {
+            "development": {
+                "plugins": ["transform-es2015-modules-commonjs"]
+            },
+            "test": {
+                "plugins": ["transform-es2015-modules-commonjs", "@babel/plugin-proposal-class-properties"],
+                "presets": [
+                    "@babel/preset-react"
+                ]
+            }
+        }
 }

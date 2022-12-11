@@ -1,29 +1,43 @@
 import { Container, Row, Jumbotron } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NavbarComponent from '../../../Components/NavBar';
 import FooterCompoment from '../../../Components/Footer';
 import ListTravel from '../../../Components/Planeamento/listTravel.Manger';
 import { travelGetAll } from '../../../Services/Travel';
-
+import { truckGetById } from '../../../Services/Truck';
+import PaginationComponent from '../../../Components/Pagination';
 export default function Travel() {
   const navigation = useNavigate();
   const [travels, settravels] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
+  const ITEMS_TRAVEL_PAGE = 4;
+
   useEffect(() => {
+     const abortController = new AbortController();
     setLoading(true);
-    travelGetAll()
-      .then((travels) => {
-        console.log(travels);
-        settravels(travels);
+    travelGetAll(abortController.signal)
+      .then((data) => {
+        settravels(data);
       })
       .catch((error) => {
-        console.log(error);
+        if (abortController.signal.aborted) {
+          console.log('The aborted the request');
+        } else {
+          console.error('The request failed');
+        }
       })
       .finally(() => {
         setLoading(false);
       });
+       return () => {
+         abortController.abort();
+       };
   }, []);
 
   if (isLoading) {
@@ -33,7 +47,14 @@ export default function Travel() {
       </>
     );
   }
-
+  const filtered = useMemo(() => {
+    let filteredResult = travels;
+    setTotalItems(filteredResult.length);
+    return filteredResult.slice(
+      (currentPage - 1) * ITEMS_TRAVEL_PAGE,
+      (currentPage - 1) * ITEMS_TRAVEL_PAGE + ITEMS_TRAVEL_PAGE
+    );
+  }, [travels, currentPage]);
   return (
     <>
       <header>
@@ -79,12 +100,16 @@ export default function Travel() {
                   </tr>
                 </thead>
                 <tbody>
-                  <ListTravel
-                    travels={travels}
-                  />
+                  <ListTravel travels={filtered} />
                 </tbody>
               </table>
             </div>
+            <PaginationComponent
+              total={totalItems}
+              itemsPerPage={ITEMS_TRAVEL_PAGE}
+              currentPage={currentPage}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
           </div>
         </Container>
       </main>

@@ -8,7 +8,7 @@ import { travelSave } from '../../Services/Travel';
 import SuccessCompoment from './../../Components/Alerts/Success';
 import AlertDismissible from './../../Components/Alerts/danger';
 import ListWarehouseOptions from './optionsDate.planeamento';
-import Map from '../Map'
+import Map from '../Map';
 const PlaneamentoCompoment = () => {
   const initTravel = {
     departureDate: '',
@@ -64,6 +64,7 @@ const PlaneamentoCompoment = () => {
   };
 
   const WarehouseAndStoreData = () => {
+    const abortController = new AbortController();
     warehouseGetAll()
       .then((warehouse) => {
         setWarehouse(warehouse);
@@ -78,7 +79,7 @@ const PlaneamentoCompoment = () => {
 
   return (
     <>
-      <Map/>
+      <Map />
       {status.type === 'erro' ? <AlertDismissible /> : <SuccessCompoment />}
       <Form onSubmit={handleSubmit}>
         <Row>

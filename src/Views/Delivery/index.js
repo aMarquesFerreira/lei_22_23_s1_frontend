@@ -1,29 +1,41 @@
 ﻿import { Container, Row, Jumbotron } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NavbarComponent from '../../Components/NavBar';
 import FooterCompoment from '../../Components/Footer';
 import ListDelivery from '../../Components/Delivery/ListDelivery';
 import { deliveryDelete, deliveryGetAll } from '../../Services/Delivery';
-
+import PaginationComponent from '../../Components/Pagination';
 export default function Delivery(props) {
   const navigation = useNavigate();
   const [deliverys, setDeliverys] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
+  const ITEMS_DELIVERY_PAGE = 4;
+
   useEffect(() => {
+      const abortController = new AbortController();
     setLoading(true);
-    deliveryGetAll()
-      .then((deliverys) => {
-        console.log(deliverys);
-        setDeliverys(deliverys);
+    deliveryGetAll(abortController.signal)
+      .then((data) => {
+        setDeliverys(data);
       })
       .catch((error) => {
-        console.log(error);
+         if (abortController.signal.aborted) {
+           console.log('The aborted the request', error.message);
+         } else {
+           console.error('The request failed', error.message);
+         }
       })
       .finally(() => {
         setLoading(false);
       });
+      return () => {
+        abortController.abort();
+      };
   }, []);
 
   const handleDeleteDelivery = (id) => {};
@@ -40,6 +52,16 @@ export default function Delivery(props) {
       </>
     );
   }
+
+  
+    const filtered = useMemo(() => {
+      let filteredResult = deliverys;
+      setTotalItems(filteredResult.length);
+      return filteredResult.slice(
+        (currentPage - 1) * ITEMS_DELIVERY_PAGE,
+        (currentPage - 1) * ITEMS_DELIVERY_PAGE + ITEMS_DELIVERY_PAGE
+      );
+    }, [deliverys, currentPage]);
 
   return (
     <>
@@ -92,13 +114,19 @@ export default function Delivery(props) {
                 </thead>
                 <tbody>
                   <ListDelivery
-                    deliverys={deliverys}
+                    deliverys={filtered}
                     handleDeleteDelivery={handleDeleteDelivery}
                     handleUpdateDelivery={handleUpdateDelivery}
                   />
                 </tbody>
               </table>
             </div>
+            <PaginationComponent
+              total={totalItems}
+              itemsPerPage={ITEMS_DELIVERY_PAGE}
+              currentPage={currentPage}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
           </div>
         </Container>
       </main>

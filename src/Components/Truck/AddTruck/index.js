@@ -2,7 +2,15 @@ import { useState } from 'react';
 import { Form, Button, Col, Row } from 'react-bootstrap';
 import { truckSave } from './../../../Services/Truck';
 import SuccessCompoment from './../../Alerts/Success';
-import AlertDismissible  from './../../Alerts/danger';
+import AlertDismissible from './../../Alerts/danger';
+import ModelSuccess from '../../Model';
+import {   validatorEnroll,
+  validatorYear,
+  validatorMonth,
+  validatorTare,
+  validatorBatteryCapacity,
+  validatorAutonomyWithMaximumLoad,
+  validatorBatteryChargingTime } from '../../../utils/truck.validator';
 const AddTruck = () => {
   const [status, setStatus] = useState({
     type: '',
@@ -19,12 +27,14 @@ const AddTruck = () => {
     batteryChargingTime: ''
   };
   const [truck, setTruck] = useState(initTruck);
-
+  const [loading, setLoading] = useState();
   const handleChange = (e) => {
     setTruck((truck) => ({ ...truck, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
     const headers = {
       'Content-Type': 'application/json'
     };
@@ -37,7 +47,6 @@ const AddTruck = () => {
             type: 'erro',
             messagem: response.data.messagem
           });
-
         } else {
           setStatus({
             type: 'success',
@@ -52,6 +61,20 @@ const AddTruck = () => {
         });
       });
   };
+
+  const validadorInput = () => {
+    return (
+      validatorEnroll(truck.enroll) && 
+      validatorYear(truck.year) &&
+      validatorMonth(truck.month) &&
+      validatorTare(truck.tare) &&
+      validatorBatteryCapacity(truck.batteryCapacity) &&
+      validatorAutonomyWithMaximumLoad(truck.AutonomyWithMaximumLoad) &&
+      validatorBatteryChargingTime(truck.batteryChargingTime)
+    );
+  };
+
+  console.log('Form estava validado!', validadorInput());
 
   return (
     <section>
@@ -71,6 +94,9 @@ const AddTruck = () => {
             <Form.Label htmlFor="year">Year</Form.Label>
             <Form.Control
               name="year"
+              maxLength={4}
+              min="1990"
+              max="2023"
               onChange={handleChange}
               type="number"
               placeholder="Enter year"
@@ -80,6 +106,10 @@ const AddTruck = () => {
             <Form.Label htmlFor="month">Month</Form.Label>
             <Form.Control
               name="month"
+              maxLength={2}
+              minLength={1}
+              min="1"
+              max="12"
               onChange={handleChange}
               type="number"
               placeholder="Enter month"
@@ -102,7 +132,7 @@ const AddTruck = () => {
               name="batteryCapacity"
               onChange={handleChange}
               type="number"
-              placeholder="Enter year"
+              placeholder="Enter battery capacity"
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -131,11 +161,15 @@ const AddTruck = () => {
               name="batteryChargingTime"
               onChange={handleChange}
               type="number"
-              placeholder="Enter year"
+              placeholder="Enter battery charging time"
             />
           </Form.Group>
         </Row>
-        <Button variant="dark" type="submit" data-testid="submitt" >
+        <Button
+          variant="dark"
+          type="submit"
+          className="typeAddTruck"
+          disabled={loading === true || !validadorInput()}>
           Submit
         </Button>
       </Form>

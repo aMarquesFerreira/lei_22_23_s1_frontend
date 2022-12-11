@@ -2,14 +2,13 @@ import axios from 'axios';
 import { DOTNET_BASE_URL, DOTNET_BASE_URL2} from '../../Config/config'
 
 
-export async function warehouseGetAll() {
-    try {
-        const response = await axios.get(`${DOTNET_BASE_URL}/warehouses`);
-
-        return response.data;
-    } catch (err) {
-        throw new Error(err);
-    }
+export async function warehouseGetAll(signal) {
+  try {
+    const response = await axios.get(`${DOTNET_BASE_URL}/warehouses`, { signal });
+    return response.data;
+  } catch (err) {
+    throw new Error(err);
+  }
 }
 
 

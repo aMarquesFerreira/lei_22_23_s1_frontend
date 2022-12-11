@@ -1,5 +1,3 @@
-//import axios from 'axios';
-//import { warehouseSave } from './../../Services/Warehouse';
 import { DOTNET_BASE_URL} from '../../Config/config'
 
 
@@ -74,7 +72,6 @@ describe('add warehouse', () => {
         'Content-Type': 'application/json'
       };
       const response = await warehouseGetById(iw.WarehouseIdentifier.identifier, headers);
-      //await expect(response.data.WarehouseIdentifier.identifier).resolves.toEqual(res.data.WarehouseIdentifier.identifier);
       expect(response.data.WarehouseIdentifier.identifier).toBe(res.data.WarehouseIdentifier.identifier);
     });
   });

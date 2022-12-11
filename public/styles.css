@@ -19,7 +19,7 @@ h1{
 
 .table-title {
     padding-bottom: 15px;
-    background: #435d7d;
+    background: #8d99a0;
     color: #fff;
     padding: 16px 30px;
     margin: -20px -25px 10px;
@@ -102,7 +102,7 @@ table.table td a {
 }
 
 table.table td a:hover {
-    color: #2196f3;
+    color: #8d99a0;
 }
 
 table.table td a.edit {
@@ -128,7 +128,7 @@ table.table .avatar {
     margin: 0 0 5px;
 }
 
-.pagination li a {
+.pagination .next {
     border: none;
     font-size: 13px;
     min-width: 30px;
@@ -141,7 +141,7 @@ table.table .avatar {
     padding: 0 6px;
 }
 
-.pagination li a:hover {
+.pagination .next:hover {
     color: #666;
 }
 

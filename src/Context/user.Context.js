@@ -1,37 +1,36 @@
 import { createContext, useEffect, useState } from 'react';
-
-import api from '../Config/config';
+import API_BASE_URL from '../Config/config';
+import axios from 'axios';
 
 const Context = createContext();
 
 function AuthProvider({ children }) {
   const [authenticated, setAuthenticated] = useState(false);
-
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const getLogin = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        api.defaults.headers.Authorization = `Bearer ${token}`;
-        setAuthenticated(true);
-      }
-      setLoading(false);
-    };
 
+  useEffect(() => {
     getLogin();
   }, []);
 
+  const getLogin = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+      setAuthenticated(true);
+    }
+    setLoading(false);
+  };
+
   const valUser = async () => {
     const valueToken = localStorage.getItem('token');
-
     const headers = {
       headers: {
         Authorization: 'Bearer ' + valueToken
       }
     };
 
-    api
-      .get('/val-token', headers)
+    axios
+      .get('/auth/me', headers)
       .then(() => {
         return true;
       })
@@ -53,7 +52,7 @@ function AuthProvider({ children }) {
   }
 
   if (loading) {
-    return <h1>Carregando...</h1>;
+    return <h1>Loading...</h1>;
   }
 
   return (

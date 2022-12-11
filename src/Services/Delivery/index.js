@@ -1,13 +1,13 @@
 import axios from 'axios';
 import {DOTNET_BASE_URL} from '../../Config/config'
 
-export async function deliveryGetAll() {
-    try {
-        const response = await axios.get(`${DOTNET_BASE_URL}/deliverys`);
-        return response.data;
-    } catch (err) {
-        throw new Error(err);
-    }
+export async function deliveryGetAll(signal) {
+  try {
+    const response = await axios.get(`${DOTNET_BASE_URL}/deliverys`, { signal });
+    return response.data;
+  } catch (err) {
+    throw new Error(err);
+  }
 }
 
 export async function deliveryDelete(identifier) {

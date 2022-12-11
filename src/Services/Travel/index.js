@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../Config/config';
 
-export async function travelGetAll() {
+export async function travelGetAll(signal) {
   try {
-    const response = await axios.get(`${API_BASE_URL}/travel/ways`);
+    const response = await axios.get(`${API_BASE_URL}/travel/ways`,{ signal});
     return response.data;
   } catch (err) {
     throw new Error(err);

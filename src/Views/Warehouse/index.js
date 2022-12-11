@@ -1,5 +1,5 @@
 import { Container, Row, Jumbotron } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NavbarComponent from '../../Components/NavBar';
 import FooterCompoment from '../../Components/Footer';
@@ -7,11 +7,17 @@ import ListWarehouse from '../../Components/Warehouse/ListWarehouse';
 import { warehouseGetAll } from '../../Services/Warehouse';
 import { warehouseDelete } from '../../Services/Warehouse';
 import data from '../../Data/warehouse';
-
+import PaginationComponent from '../../Components/Pagination';
 export default function Warehouse() {
   const navigation = useNavigate();
   const [warehouses, setWarehouses] = useState([]);
   const [isLoading, setLoading] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
+  const ITEMS_TRUCK_PAGE = 4;
+
   const handleDeletewarehouse = (id) => {
     warehouseDelete(id).then(() => {
       setWarehouses(warehouses.filter((e) => e._id !== id));
@@ -22,7 +28,9 @@ export default function Warehouse() {
       warehouseDelete(id).then((res) => {
         if (res.status === 200) {
           setWarehouses(
-            warehouses.filter((warehouse) => { warehouse.WarehouseIdentifier.identifier !== id })
+            warehouses.filter((warehouse) => {
+              warehouse.WarehouseIdentifier.identifier !== id;
+            })
           );
           setLoading(false);
         }
@@ -35,18 +43,25 @@ export default function Warehouse() {
   };
 
   useEffect(() => {
+    const abortController = new AbortController();
     setLoading(true);
-    warehouseGetAll()
-      .then((warehouses) => {
-        console.log(warehouses);
-        setWarehouses(warehouses);
+    warehouseGetAll(abortController.signal)
+      .then((data) => {
+        setWarehouses(data);
       })
       .catch((error) => {
-        console.log(error);
+        if (abortController.signal.aborted) {
+          console.log('The aborted the request', error.message);
+        } else {
+          console.error('The request failed', error.message);
+        }
       })
       .finally(() => {
         setLoading(false);
       });
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   if (isLoading) {
@@ -56,6 +71,15 @@ export default function Warehouse() {
       </>
     );
   }
+
+    const filtered = useMemo(() => {
+      let filteredResult = warehouses;
+      setTotalItems(filteredResult.length);
+      return filteredResult.slice(
+        (currentPage - 1) * ITEMS_TRUCK_PAGE,
+        (currentPage - 1) * ITEMS_TRUCK_PAGE + ITEMS_TRUCK_PAGE
+      );
+    }, [warehouses, currentPage]);
 
   return (
     <>
@@ -107,13 +131,19 @@ export default function Warehouse() {
                 </thead>
                 <tbody>
                   <ListWarehouse
-                    warehouses={warehouses}
+                    warehouses={filtered}
                     handleUpdatewarehouse={handleUpdatewarehouse}
                     handleDeletewarehouse={handleDeletewarehouse}
                   />
                 </tbody>
               </table>
             </div>
+            <PaginationComponent
+              total={totalItems}
+              itemsPerPage={ITEMS_TRUCK_PAGE}
+              currentPage={currentPage}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
           </div>
         </Container>
       </main>
