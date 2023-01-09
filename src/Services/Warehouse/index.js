@@ -1,14 +1,15 @@
 import axios from 'axios';
-import { DOTNET_BASE_URL, DOTNET_BASE_URL2} from '../../Config/config'
+import { DOTNET_BASE_URL, DOTNET_BASE_URL2 } from '../../Config/config'
+import { Controller } from 'react-hook-form';
 
 
-export async function warehouseGetAll(signal) {
-  try {
-    const response = await axios.get(`${DOTNET_BASE_URL}/warehouses`, { signal });
-    return response.data;
-  } catch (err) {
-    throw new Error(err);
-  }
+export async function warehouseGetAll(offset, size, signal) {
+    try {
+        const response = await axios.get(`${DOTNET_BASE_URL}/warehouses/list?offset=${offset}&size=${size}`, { signal });
+        return response.data;
+    } catch (err) {
+        throw new Error(err);
+    }
 }
 
 
@@ -22,13 +23,14 @@ export async function warehouseDelete(identifier) {
 
 export async function warehouseGetById(identifier) {
     try {
-        const response = await axios.get(`${DOTNET_BASE_URL}/warehouses/${identifier}`)
-        if (response.ok === false) {
-            //log(response.data);
-            throw new Error('Failed to axios get.');
-        }
+        if (!identifier) { throw new Error('No such identifier provided for warehouse ') }
+        const response = await axios.get(`${DOTNET_BASE_URL}/warehouses/${identifier}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
         return response;
-        //return response.status(200).json();
     } catch (err) {
         throw new Error(err);
     }
@@ -38,13 +40,11 @@ export async function warehouseSave(warehouse) {
     try {
         console.log('Saving', warehouse);
         const response = await axios.post(`${DOTNET_BASE_URL}/warehouses`, warehouse, {
-            
+
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        
-        //return response.status(201).json();
         return response;
     } catch (err) {
         throw new Error(err);
@@ -56,15 +56,55 @@ export async function warehouseUpdate(identifier, warehouse) {
         if (!identifier) {
             throw new Error('Invalid input data provided.');
         }
-        console.log("from server" + " "+identifier.data);
-        console.log(warehouse);
         const response = await axios.put(`${DOTNET_BASE_URL}/warehouses/${identifier}`, warehouse, {
             headers: {
                 'Content-Type': 'application/json',
             },
         });
         return response;
-        //return response.status(200).json();
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
+export async function warehouseUpdateIsActive(identifier, warehouse) {
+    try {
+        if (!identifier) {
+            throw new Error('Invalid input data provided.');
+        }
+        const response = await axios.patch(`${DOTNET_BASE_URL}/warehouses/inactive/${identifier}`, warehouse, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
+export async function warehousesActive(signal) {
+    try {
+        const response = await axios.get(`${DOTNET_BASE_URL}/warehouses/ative`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            signal,
+        });
+        return response;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
+export async function warehousesInactive() {
+    try {
+        const response = await axios.get(`${DOTNET_BASE_URL}/warehouses/inactive`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response;
     } catch (err) {
         throw new Error(err);
     }

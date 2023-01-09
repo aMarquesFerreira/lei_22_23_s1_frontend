@@ -8,15 +8,18 @@ import { warehouseGetAll } from '../../Services/Warehouse';
 import { warehouseDelete } from '../../Services/Warehouse';
 import data from '../../Data/warehouse';
 import PaginationComponent from '../../Components/Pagination';
+import { motion } from "framer-motion";
 export default function Warehouse() {
   const navigation = useNavigate();
   const [warehouses, setWarehouses] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const abortController = new AbortController();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalItems, setTotalItems] = useState(0);
-  const ITEMS_TRUCK_PAGE = 4;
+  const [pageCount, setPageCount] = useState(0)
+  const [offset, setOffset] = useState(0)
+
+  const ITEMS_WAREHUSE_PAGE = 5;
 
   const handleDeletewarehouse = (id) => {
     warehouseDelete(id).then(() => {
@@ -43,26 +46,28 @@ export default function Warehouse() {
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
+    selectPage(1).then(() => setLoading(false));
+  }, []);
+
+  const selectPage = async (page) => {
+    console.log(`Selecting ${page}`);
+    const offset = (page - 1) * ITEMS_WAREHUSE_PAGE;
     setLoading(true);
-    warehouseGetAll(abortController.signal)
+    await warehouseGetAll(offset, ITEMS_WAREHUSE_PAGE, abortController.signal)
       .then((data) => {
-        setWarehouses(data);
+        setWarehouses(data.warehouse);
+
+        setCurrentPage(offset / ITEMS_WAREHUSE_PAGE + 1);
+        setPageCount(Math.ceil(data.total / ITEMS_WAREHUSE_PAGE))
       })
       .catch((error) => {
-        if (abortController.signal.aborted) {
-          console.log('The aborted the request', error.message);
-        } else {
-          console.error('The request failed', error.message);
-        }
+        console.error(error);
       })
       .finally(() => {
         setLoading(false);
       });
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+  };
+
 
   if (isLoading) {
     return (
@@ -71,15 +76,6 @@ export default function Warehouse() {
       </>
     );
   }
-
-    const filtered = useMemo(() => {
-      let filteredResult = warehouses;
-      setTotalItems(filteredResult.length);
-      return filteredResult.slice(
-        (currentPage - 1) * ITEMS_TRUCK_PAGE,
-        (currentPage - 1) * ITEMS_TRUCK_PAGE + ITEMS_TRUCK_PAGE
-      );
-    }, [warehouses, currentPage]);
 
   return (
     <>
@@ -96,7 +92,12 @@ export default function Warehouse() {
           </Container>
         </Jumbotron>
       </header>
-      <main>
+      <motion.main
+        initial={{ width: "100px" }}
+        animate={{ width: "100%" }}
+        exit={{ x: "100%", opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <Container>
           <div className="table-responsive">
             <div className="table-wrapper">
@@ -131,7 +132,7 @@ export default function Warehouse() {
                 </thead>
                 <tbody>
                   <ListWarehouse
-                    warehouses={filtered}
+                    warehouses={warehouses}
                     handleUpdatewarehouse={handleUpdatewarehouse}
                     handleDeletewarehouse={handleDeletewarehouse}
                   />
@@ -139,14 +140,14 @@ export default function Warehouse() {
               </table>
             </div>
             <PaginationComponent
-              total={totalItems}
-              itemsPerPage={ITEMS_TRUCK_PAGE}
+              total={pageCount}
+              itemsPerPage={ITEMS_WAREHUSE_PAGE}
               currentPage={currentPage}
-              onPageChange={(page) => setCurrentPage(page)}
+              onPageChange={(page) => selectPage(page)}
             />
           </div>
         </Container>
-      </main>
+      </motion.main>
       <FooterCompoment />
     </>
   );

@@ -2,7 +2,6 @@ import * as THREE from "three";
 import {Canvas, useFrame, useLoader} from '@react-three/fiber'
 import {Suspense} from "react";
 import ContextHeader from './contextHeader';
-import './style.css';
 
 /* THREE.DefaultLoadingManager.addHandler(/\.dds$/i, new DDSLoader());
  */
@@ -14,7 +13,7 @@ export default function Header() {
             <ContextHeader />
           </Suspense>
         </Canvas>
-        <div class="overlay">
+        <div className="overlay">
           <h2 className="title-header">
             What is Lorem Ipsum?
             <br />

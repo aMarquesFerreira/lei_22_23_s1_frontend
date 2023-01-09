@@ -3,14 +3,20 @@ import NavbarComponent from '../../Components/NavBar';
 import Footer from '../../Components/Footer';
 import Carousel from '../../Components/Carousel';
 import ImgTRuck from './../../Components/Carousel/imgFrist.jpg'
+import { motion } from "framer-motion";
 export default function About() {
     return (
         <>
             <header><NavbarComponent /></header>
-            <main>
+            <motion.main
+                initial={{ width: "100px" }}
+                animate={{ width: "100%" }}
+                exit={{ x: "100%", opacity: 0 }}
+                transition={{ duration: 0.5 }}
+            >
                 <Carousel />
                 <Container className='marketing'>
-                <Row className='mt-4'>
+                    <Row className='mt-4'>
                         <Col className='lg-4'>
                             <figure >
                                 <img className='rounded-circle '
@@ -39,7 +45,7 @@ export default function About() {
 
                         </Col>
                     </Row>
-                    <hr className="featurette-divider"/>
+                    <hr className="featurette-divider" />
                     <Row className='mt-4'>
                         <Col className='md-7'>
                             <h3 className='featurette-heading'>What is Lorem Ipsum?</h3>
@@ -61,7 +67,7 @@ export default function About() {
                             </figure>
                         </Col>
                     </Row>
-                    <hr className="featurette-divider"/>
+                    <hr className="featurette-divider" />
                     <Row className='mt-4'>
                         <Col className='md-5'>
                             <figure>
@@ -84,7 +90,7 @@ export default function About() {
                         </Col>
                     </Row>
                 </Container>
-            </main>
+            </motion.main>
             <footer>
                 <Footer />
             </footer>

@@ -1,11 +1,12 @@
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import SuccessCompoment from '../../Alerts/Success';
 import AlertDismissible from '../../Alerts/danger';
 import { Form, Button, Col, Row } from 'react-bootstrap';
 import { truckGetById, truckUpdate } from '../../../Services/Truck';
+import { isDisabled } from '@testing-library/user-event/dist/utils';
 
-const TruckDetails = () => {
+const TruckDetails = ({match}) => {
   const { id } = useParams();
   const initTruck = {
     enroll: '',
@@ -15,7 +16,8 @@ const TruckDetails = () => {
     batteryCapacity: '',
     totalBatterycapacity: '',
     AutonomyWithMaximumLoad: '',
-    batteryChargingTime: ''
+    batteryChargingTime: '',
+    isActive: Boolean()
   };
   const [truck, setTruck] = useState({ initTruck });
   const [editTruck, setEditTruck] = useState({});
@@ -27,53 +29,67 @@ const TruckDetails = () => {
   const [totalBatterycapacity, setTotalBatterycapacity] = useState('');
   const [autonomyWithMaximumLoad, setAutonomyWithMaximumLoad] = useState('');
   const [batteryChargingTime, setBatteryChargingTime] = useState('');
+  const [isActive, setIsActive] = useState(false);
+  var convertToStringIsActive = new String(truck.isActive);
+  const afterFirstRender = useRef(false);
+  const [visible, setVisible] = useState(true);
 
   useLayoutEffect(() => {
     truckGetById(id)
       .then((data) => setTruck(data))
       .catch((err) => console.log(err));
-    return () => {
-      window.scrollTo(0, 0);
-    };
   }, [id]);
   const [success, setSuccess] = useState(false);
   const [status, setStatus] = useState({
     type: '',
     messagem: ''
   });
+  useEffect(() => {
+    console.log(afterFirstRender.current);
+    if (!afterFirstRender.current) {
+      afterFirstRender.current = false;
+      return;
+    }
+  }, [visible]);
 
   const handleChange = (e) => {
     setEditTruck((editTruck) => ({ ...editTruck, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = () => {
+  const handleToggle = () => {
+    setVisible((current) => !current);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const headers = {
       'Content-Type': 'application/json'
     };
-
     setSuccess(true);
-    truckUpdate(id, editTruck, headers)
-      .then((response) => {
-        console.log(truck);
-        console.log(response.data.truck);
-        if (response.data.erro) {
+    if (visible === false) {
+      truckUpdate(id, editTruck, headers)
+        .then((response) => {
+          console.log(truck);
+          console.log(response.data.truck);
+          if (response.data.erro) {
+            setStatus({
+              type: 'erro',
+              messagem: response.data.messagem
+            });
+          } else {
+            setStatus({
+              type: 'success',
+              messagem: response.data.messagem
+            });
+          }
+        })
+        .catch(() => {
           setStatus({
             type: 'erro',
-            messagem: response.data.messagem
+            messagem: 'Err: Try later!'
           });
-        } else {
-          setStatus({
-            type: 'success',
-            messagem: response.data.messagem
-          });
-        }
-      })
-      .catch(() => {
-        setStatus({
-          type: 'erro',
-          messagem: 'Err: Try later!'
         });
-      });
+    }
     setSuccess(false);
     window.scrollTo(0, 0);
   };
@@ -81,12 +97,21 @@ const TruckDetails = () => {
   return (
     <section>
       {status.type === 'erro' ? <AlertDismissible /> : <SuccessCompoment />}
+      <h1>Active</h1>
+      <p>
+        The status of the current vehicle, be careful if you have true you cannot travel with it:{' '}
+        <b>{convertToStringIsActive}</b>
+      </p>
+      <Button style={{ marginBottom: '30px' }} variant="info" onClick={handleToggle}>
+        Edit
+      </Button>
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Form.Group as={Col}>
             <Form.Label htmlFor="enroll">Enroll</Form.Label>
             <Form.Control
               name="enroll"
+              disabled={visible ? true : false}
               placeholder={truck.enroll}
               onChange={handleChange}
               type="text"
@@ -98,6 +123,7 @@ const TruckDetails = () => {
               name="year"
               placeholder={truck.year}
               onChange={handleChange}
+              disabled={visible ? true : false}
               type="number"
             />
           </Form.Group>
@@ -106,6 +132,7 @@ const TruckDetails = () => {
             <Form.Control
               name="month"
               placeholder={truck.month}
+              disabled={visible ? true : false}
               onChange={handleChange}
               type="number"
             />
@@ -118,6 +145,7 @@ const TruckDetails = () => {
               name="tare"
               placeholder={truck.tare}
               onChange={handleChange}
+              disabled={visible ? true : false}
               type="number"
             />
           </Form.Group>
@@ -126,6 +154,7 @@ const TruckDetails = () => {
             <Form.Control
               name="batteryCapacity"
               placeholder={truck.batteryCapacity}
+              disabled={visible ? true : false}
               onChange={handleChange}
               type="number"
             />
@@ -134,7 +163,8 @@ const TruckDetails = () => {
             <Form.Label htmlFor="totalBatterycapacity">Total battery capacity</Form.Label>
             <Form.Control
               name="totalBatterycapacity"
-              placeholder={truck.totalBatteryCapacity}
+              placeholder={truck.totalBatterycapacity}
+              disabled={visible ? true : false}
               onChange={handleChange}
               type="number"
             />
@@ -146,6 +176,7 @@ const TruckDetails = () => {
             <Form.Control
               name="AutonomyWithMaximumLoad"
               placeholder={truck.AutonomyWithMaximumLoad}
+              disabled={visible ? true : false}
               onChange={handleChange}
               type="number"
             />
@@ -155,14 +186,30 @@ const TruckDetails = () => {
             <Form.Control
               name="batteryChargingTime"
               placeholder={truck.batteryChargingTime}
+              disabled={visible ? true : false}
               onChange={handleChange}
               type="number"
             />
           </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="isActive">Active</Form.Label>
+            <Form.Control
+              as="select"
+              name="isActive"
+              onChange={handleChange}
+              disabled={visible ? true : false}
+              aria-label="Default select example">
+              <option>Open this select menu</option>
+              <option defaultValue value="false">
+                False
+              </option>
+              <option value="true">True</option>
+            </Form.Control>
+          </Form.Group>
         </Row>
-        <Button variant="dark" type="submit">
+        {visible ? true : <Button variant="dark" type="submit">
           Submit
-        </Button>
+        </Button>}
       </Form>
     </section>
   );

@@ -2,14 +2,15 @@ import { useParams } from 'react-router-dom';
 import { Form, Button, Col, Row } from 'react-bootstrap';
 import './style.css';
 import { useRef, useState, useEffect } from 'react';
-import { truckGetAll } from '../../Services/Truck';
-import { warehouseGetAll } from '../../Services/Warehouse';
+import { truckGetAllInhibited } from '../../Services/Truck';
+import { warehousesActive } from '../../Services/Warehouse';
 import { travelSave } from '../../Services/Travel';
 import SuccessCompoment from './../../Components/Alerts/Success';
 import AlertDismissible from './../../Components/Alerts/danger';
 import ListWarehouseOptions from './optionsDate.planeamento';
 import Map from '../Map';
 const PlaneamentoCompoment = () => {
+  const abortController = new AbortController();
   const initTravel = {
     departureDate: '',
     arrivalDate: '',
@@ -21,7 +22,7 @@ const PlaneamentoCompoment = () => {
     truck: ''
   };
   const [travel, setTravel] = useState(initTravel);
-  const [truck, setTruck] = useState([{}]);
+  const [truck, setTruck] = useState([]);
   const [warehouse, setWarehouse] = useState([]);
   const current = useRef();
   const [status, setStatus] = useState({
@@ -56,18 +57,18 @@ const PlaneamentoCompoment = () => {
       });
   }
   const TruckAndStoreData = () => {
-    truckGetAll()
+    truckGetAllInhibited(abortController.signal)
       .then((truck) => {
-        setTruck(truck);
+        setTruck(truck.data);
       })
       .catch((error) => console.log(error));
+ 
   };
 
   const WarehouseAndStoreData = () => {
-    const abortController = new AbortController();
-    warehouseGetAll()
-      .then((warehouse) => {
-        setWarehouse(warehouse);
+    warehousesActive(abortController.signal)
+      .then((data) => {
+        setWarehouse(data.data);
       })
       .catch((error) => console.log(error));
   };
@@ -92,6 +93,20 @@ const PlaneamentoCompoment = () => {
             <Form.Control name="arrivalDate" onChange={handleChange} type="date" />
           </Form.Group>
           <Form.Group as={Col}>
+            <Form.Label htmlFor="departureLocation">Departure location</Form.Label>
+            <Form.Control
+              as="select"
+              name="departureLocation"
+              onChange={handleChange}
+              type="text"
+              placeholder="Enter arrivalLocation">
+              <ListWarehouseOptions warehouse={warehouse} />
+            </Form.Control>
+          </Form.Group>
+        
+        </Row>
+        <Row>
+          <Form.Group as={Col}>
             <Form.Label htmlFor="departureTime">Open from 9:00 to 18:00 :Departure</Form.Label>
             <Form.Control
               name="departureTime"
@@ -112,37 +127,19 @@ const PlaneamentoCompoment = () => {
             />
           </Form.Group>
         </Row>
-        <Row></Row>
         <Row>
-          <Form.Group as={Col}>
-            <Form.Label htmlFor="departureLocation">Departure location</Form.Label>
-            <Form.Control
-              as="select"
-              name="departureLocation"
-              onChange={handleChange}
-              type="text"
-              placeholder="Enter arrivalLocation">
-              <ListWarehouseOptions warehouse={warehouse} />
-            </Form.Control>
-          </Form.Group>
-          <Form.Group as={Col}>
-            <Form.Label htmlFor="arrivalLocation">Arrival location</Form.Label>
-            <Form.Control
-              as="select"
-              name="arrivalLocation"
-              onChange={handleChange}
-              type="text"
-              placeholder="Enter arrivalLocation">
-              <ListWarehouseOptions warehouse={warehouse} />
-            </Form.Control>
-          </Form.Group>
           <Form.Group as={Col}>
             <Form.Label htmlFor="status">Status</Form.Label>
             <Form.Control
               name="status"
+              as="select"
               onChange={handleChange}
               type="text"
-              placeholder="Enter status"></Form.Control>
+              placeholder="Enter status">
+              <option>Completed</option>
+              <option>Cancel</option>
+              <option>Pedente</option>
+              </Form.Control>
           </Form.Group>
           <Form.Group as={Col}>
             <Form.Label htmlFor="truck">Truck</Form.Label>
@@ -152,6 +149,7 @@ const PlaneamentoCompoment = () => {
               onChange={handleChange}
               type="text"
               placeholder="Enter arrivalLocation">
+              
               {truck.map((option, i) => (
                 <option key={i} value={option.idTruck}>
                   {option.enroll}

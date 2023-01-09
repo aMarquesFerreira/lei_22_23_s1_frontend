@@ -7,16 +7,21 @@ import ListTruck from '../../Components/List';
 import { truckDelete, truckGetAll } from '../../Services/Truck';
 import data from '../../Data/truck';
 import PaginationComponent from '../../Components/Pagination';
+import { motion } from "framer-motion";
 export default function Truck() {
   const navigation = useNavigate();
   const [trucks, setTrucks] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const abortController = new AbortController();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalItems, setTotalItems] = useState(0);
-  const ITEMS_TRUCK_PAGE = 4;
+  const [pageCount, setPageCount] = useState(0);
+  
+  const ITEMS_TRUCK_PAGE_LIMIT = 5;
 
+  useEffect(() => {
+    selectPage(1);
+  }, []);
 
   const handleDeletetruck = (id) => {
     setLoading(true);
@@ -33,31 +38,24 @@ export default function Truck() {
     });
   };
 
-  const handleUpdatetruck = (id) => {
-    navigation(`/truck/edit/${id}`);
-  };
-
-  useEffect(() => {
-    const abortController = new AbortController();
+  
+  const selectPage = async (page) => {
+    console.log(`Selecting ${page}`);
+    const offset = (page - 1) * ITEMS_TRUCK_PAGE_LIMIT;
     setLoading(true);
-    truckGetAll(abortController.signal)
+    await truckGetAll(ITEMS_TRUCK_PAGE_LIMIT, offset, abortController.signal)
       .then((data) => {
-        setTrucks(data);
+        setTrucks(data.data);
+        setCurrentPage(offset / ITEMS_TRUCK_PAGE_LIMIT + 1);
+        setPageCount(Math.ceil(data.pagination.total / ITEMS_TRUCK_PAGE_LIMIT))
       })
       .catch((error) => {
-        if (abortController.signal.aborted) {
-          console.log('The aborted the request');
-        } else {
-          console.error('The request failed');
-        }
+        console.error(error);
       })
       .finally(() => {
         setLoading(false);
       });
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+  };
 
   if (isLoading) {
     return (
@@ -66,14 +64,10 @@ export default function Truck() {
       </>
     );
   }
-  const filtered = useMemo(() => {
-    let filteredResult = trucks;
-    setTotalItems(filteredResult.length);
-    return filteredResult.slice(
-      (currentPage - 1) * ITEMS_TRUCK_PAGE,
-      (currentPage - 1) * ITEMS_TRUCK_PAGE + ITEMS_TRUCK_PAGE
-    );
-  }, [trucks, currentPage]);
+
+  const handleUpdatetruck = (id) => {
+    navigation(`/truck/edit/${id}`);
+  };
 
   return (
     <>
@@ -90,7 +84,12 @@ export default function Truck() {
           </Container>
         </Jumbotron>
       </header>
-      <main>
+      <motion.main
+        initial={{ width: "100px" }}
+        animate={{ width: "100%" }}
+        exit={{ x: "100%", opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <Container>
           <div className="table-responsive">
             <div className="table-wrapper">
@@ -115,9 +114,9 @@ export default function Truck() {
               <table className="table table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>Year</th>
-                    <th>Enroll</th>
                     <th>Month</th>
+                    <th>Enroll</th>
+                    <th>Year</th>
                     <th>Tare</th>
                     <th>BatteryCapacity</th>
                     <th>Action</th>
@@ -125,7 +124,7 @@ export default function Truck() {
                 </thead>
                 <tbody>
                   <ListTruck
-                    trucks={filtered}
+                    trucks={trucks}
                     handleDeletetruck={handleDeletetruck}
                     handleUpdatetruck={handleUpdatetruck}
                   />
@@ -133,14 +132,14 @@ export default function Truck() {
               </table>
             </div>
             <PaginationComponent
-              total={totalItems}
-              itemsPerPage={ITEMS_TRUCK_PAGE}
+              total={pageCount}
+              itemsPerPage={ITEMS_TRUCK_PAGE_LIMIT}
               currentPage={currentPage}
-              onPageChange={(page) => setCurrentPage(page)}
+              onPageChange={(page) => selectPage(page)}
             />
           </div>
         </Container>
-      </main>
+      </motion.main>
       <FooterCompoment />
     </>
   );

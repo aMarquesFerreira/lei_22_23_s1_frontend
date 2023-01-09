@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Form, Button, Col, Row } from 'react-bootstrap';
-import { warehouseUpdate } from './../../../Services/Warehouse';
+import { warehouseUpdate, warehouseGetById } from './../../../Services/Warehouse';
 import SuccessCompoment from './../../Alerts/Success';
 import AlertDismissible from './../../Alerts/danger';
 import { useParams } from 'react-router-dom';
-
-const WarehouseDetails = () => {
+import { useEffect } from 'react';
+import WarehouseInactive from'./formInative'
+const WarehouseDetails = ({ match }) => {
   const { id } = useParams();
   const [status, setStatus] = useState({
     type: '',
@@ -34,9 +35,23 @@ const WarehouseDetails = () => {
     }
   };
   const [warehouse, setWarehouse] = useState(initWarehouse);
-
+  const [WarehouseId, setWarehouseId] = useState({});
+  const [warehouseDesignation, setWarehouseWarehouseDesignation] = useState({});
+  const [Address, setAddress] = useState({});
+  const [Coordinates, setCoordinates] = useState({});
+  const [Altitude, setAltitude] = useState({});
+  const afterFirstRender = useRef(false);
+  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    if (!afterFirstRender.current) {
+      afterFirstRender.current = false;
+      return;
+    }
+  }, [visible]);
+  const handleToggle = () => {
+    setVisible((current) => !current);
+  };
   function handleWarehouseIdentifierChange(e) {
-    //console.log(id);
     warehouse.WarehouseIdentifier.identifier = e.target.value;
   }
 
@@ -71,18 +86,25 @@ const WarehouseDetails = () => {
     warehouse.Altitude.whAltitude = e.target.value;
   }
 
-  console.log(warehouse);
+  useEffect(() => {
+    warehouseGetById(id)
+      .then((data) => {
+        setWarehouseId(data.data);
+        setWarehouseWarehouseDesignation(data.data.designation.warehouseDesignation);
+        setAddress(data.data.address);
+        setCoordinates(data.data.coordinates);
+        setAltitude(data.data.altitude);
+      })
+  }, [id])
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(warehouse);
+  const handleSubmit = () => {
     const headers = {
       'Content-Type': 'application/json'
     };
     warehouseUpdate(id, warehouse, headers)
       .then((response) => {
-        console.log(warehouse);
-        console.log(response.data.warehouse);
+        console.log(warehouse, " aa");
+        console.log(response.data.warehouse, "kn");
         if (response.data.erro) {
           setStatus({
             type: 'erro',
@@ -102,28 +124,41 @@ const WarehouseDetails = () => {
         });
       });
   };
-
+  var convertToStringIsActive = new String(WarehouseId.active);
   return (
     <section>
       {status.type === 'erro' ? <AlertDismissible /> : <SuccessCompoment />}
+      <h1>Active</h1>
+      <WarehouseInactive style={{ marginTop: '30px' }} id={id} /> 
+      <p>
+        The status of the current vehicle, be careful if you have true you cannot travel with it:{' '}
+        <b>{convertToStringIsActive}</b>
+      </p>
+      <br></br>
+      {WarehouseId.active == true ?
+        <Button style={{ marginBottom: '30px' }} variant="info" onClick={handleToggle}>
+          Edit
+        </Button> : false}
       <Form autoComplete='true' onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Form.Group as={Col}>
             <Form.Label>Identifier</Form.Label>
             <Form.Control
               name={warehouse.WarehouseIdentifier.identifier}
+              placeholder={id}
               onChange={handleWarehouseIdentifierChange}
               type="text"
-              placeholder="Enter identifier"
+              disabled={visible ? true : false}
             />
           </Form.Group>
           <Form.Group as={Col}>
             <Form.Label htmlFor="warehouseDesignation">Designation</Form.Label>
             <Form.Control
               name={warehouse.Designation.warehouseDesignation}
+              placeholder={warehouseDesignation}
               onChange={handleDesignationChange}
               type="text"
-              placeholder="Enter designation"
+              disabled={visible ? true : false}
             />
           </Form.Group>
         </Row>
@@ -134,7 +169,8 @@ const WarehouseDetails = () => {
               name={warehouse.Address.street}
               onChange={handleAddressChange}
               type="text"
-              placeholder="Enter street"
+              placeholder={Address.street}
+              disabled={visible ? true : false}
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -143,7 +179,8 @@ const WarehouseDetails = () => {
               name={warehouse.Address.doorNumber}
               onChange={handleAddressdoorNumberChange}
               type="number"
-              placeholder="Enter doorNumber"
+              placeholder={Address.doorNumber}
+              disabled={visible ? true : false}
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -152,7 +189,8 @@ const WarehouseDetails = () => {
               name={warehouse.Address.zipCode}
               onChange={handleAddressZipCodeChange}
               type="text"
-              placeholder="Enter zip code"
+              placeholder={Address.zipCode}
+              disabled={visible ? true : false}
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -161,7 +199,8 @@ const WarehouseDetails = () => {
               name={warehouse.Address.city}
               onChange={handleAddressCityChange}
               type="text"
-              placeholder="Enter city"
+              disabled={visible ? true : false}
+              placeholder={Address.city}
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -170,7 +209,8 @@ const WarehouseDetails = () => {
               onChange={handleAddressdoorCountryChange}
               name={warehouse.Address.country}
               type="text"
-              placeholder="Enter country"
+              placeholder={Address.country}
+              disabled={visible ? true : false}
             />
           </Form.Group>
         </Row>
@@ -181,7 +221,8 @@ const WarehouseDetails = () => {
               name={warehouse.Coordinates.latitude}
               onChange={handleCoordinatesChange}
               type="text"
-              placeholder="Enter latitude"
+              placeholder={Coordinates.latitude}
+              disabled={visible ? true : false}
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -190,7 +231,8 @@ const WarehouseDetails = () => {
               name={warehouse.Coordinates.longitude}
               onChange={handleCoordinatesLongitudeChange}
               type="text"
-              placeholder="Enter longitude"
+              disabled={visible ? true : false}
+              placeholder={Coordinates.longitude}
             />
           </Form.Group>
           <Form.Group as={Col}>
@@ -198,14 +240,16 @@ const WarehouseDetails = () => {
             <Form.Control
               name={warehouse.Altitude.whAltitude}
               onChange={handleAltitudeChange}
+              disabled={visible ? true : false}
               type="number"
-              placeholder="Enter whAltitude"
+              placeholder={Altitude.whAltitude}
             />
           </Form.Group>
         </Row>
-        <Button variant="dark" type="submit">
+        {visible ? true : <Button variant="dark" type="submit">
           Submit
         </Button>
+        }
       </Form>
     </section>
   );

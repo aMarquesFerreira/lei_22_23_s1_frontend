@@ -15,6 +15,7 @@ const useFormValue = () => {
   const handleChange = (e) => {
     setForm((from) => ({ ...from, [e.target.name]: e.target.value }));
   };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     truckSave(form);

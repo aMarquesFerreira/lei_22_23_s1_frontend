@@ -5,7 +5,11 @@ import { LinearEncoding, RepeatWrapping, TextureLoader } from 'three';
 import { useLoader } from '@react-three/fiber';
 import { useEffect } from 'react';
 import TEXTURE from './asphaltTexture.jpg'
+
+
 export function Ground(props) {
+
+  
   const [ref] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0], ...props }));
   
   const roadAshalt = useLoader(TextureLoader, TEXTURE);

@@ -24,7 +24,8 @@ const AddTruck = () => {
     batteryCapacity: '',
     totalBatterycapacity: '',
     AutonomyWithMaximumLoad: '',
-    batteryChargingTime: ''
+    batteryChargingTime: '',
+    isActive: false
   };
   const [truck, setTruck] = useState(initTruck);
   const [loading, setLoading] = useState();
@@ -32,16 +33,12 @@ const AddTruck = () => {
     setTruck((truck) => ({ ...truck, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  
+  const handleSubmit = () => {
     const headers = {
       'Content-Type': 'application/json'
     };
     truckSave(truck, headers)
       .then((response) => {
-        console.log(truck);
-        console.log(response.data.truck);
         if (response.data.erro) {
           setStatus({
             type: 'erro',
@@ -62,19 +59,6 @@ const AddTruck = () => {
       });
   };
 
-  const validadorInput = () => {
-    return (
-      validatorEnroll(truck.enroll) && 
-      validatorYear(truck.year) &&
-      validatorMonth(truck.month) &&
-      validatorTare(truck.tare) &&
-      validatorBatteryCapacity(truck.batteryCapacity) &&
-      validatorAutonomyWithMaximumLoad(truck.AutonomyWithMaximumLoad) &&
-      validatorBatteryChargingTime(truck.batteryChargingTime)
-    );
-  };
-
-  console.log('Form estava validado!', validadorInput());
 
   return (
     <section>
@@ -121,6 +105,8 @@ const AddTruck = () => {
             <Form.Label htmlFor="tare">Tare</Form.Label>
             <Form.Control
               name="tare"
+              min="1"
+              max="12"
               onChange={handleChange}
               type="number"
               placeholder="Enter tare"
@@ -169,7 +155,7 @@ const AddTruck = () => {
           variant="dark"
           type="submit"
           className="typeAddTruck"
-          disabled={loading === true || !validadorInput()}>
+         >
           Submit
         </Button>
       </Form>

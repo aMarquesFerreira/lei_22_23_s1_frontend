@@ -4,33 +4,59 @@ import './style.css';
 import { deliverySave } from './../../../Services/Delivery';
 import SuccessCompoment from './../../Alerts/Success';
 import AlertDismissible from './../../Alerts/danger';
+import {
+  validatorDeliveryIdentifier,
+  validatorDeliveryDate,
+  validatorDeliveryWeight,
+  validatorDeliveryWarehouse,
+  validatorTimeLoadTruck,
+  validatorTimeUnloadTruck
+} from './../../../utils/delivery.validator'
+import { warehousesActive } from '../../../Services/Warehouse';
+import ListWarehouseOptions from '../../Planeamento/optionsDate.planeamento';
+import { useEffect } from 'react';
+
 const AddDelivery = () => {
+  const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({
     type: '',
     messagem: ''
   });
   const initDelivery = {
     DeliveryIdentifier: {
-      Identifier: '456'
+      Identifier: ''
     },
-    DeliveryDate: '20221005',
+    DeliveryDate: '',
     DeliveryWeight: {
-      DeliveryWeight: '1000'
+      DeliveryWeight: ''
     },
-    DeliveryWarehouse: '111',
+    DeliveryWarehouse: '',
     TimeLoadTruck: {
-      Time: '60'
+      Time: ''
     },
     TimeUnloadTruck: {
-      Time: '60'
+      Time: ''
     }
   };
   const [delivery, setDelivery] = useState(initDelivery);
+  const [warehouse, setWarehouse] = useState([]);
+  const WarehouseAndStoreData = () => {
+    warehousesActive()
+      .then((data) => {
+        console.log(data);
+        setWarehouse(data.data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    WarehouseAndStoreData();
+  }, [])
 
   function handleDeliveryIdentifierChange(e) {
     delivery.DeliveryIdentifier.identifier = e.target.value;
   }
-  
+
   function handleDeliveryDateChange(e) {
     delivery.DeliveryDate = e.target.value;
   }
@@ -38,7 +64,8 @@ const AddDelivery = () => {
     delivery.DeliveryWeight.DeliveryWeight = e.target.value;
   }
   function handleDeliveryWarehouseChange(e) {
-    delivery.DeliveryWarehouse.TimeLoadTruck = e.target.value;
+    delivery.DeliveryWarehouse = e.target.value;
+
   }
   function handleTimeUnloadTruckChange(e) {
     delivery.TimeUnloadTruck.Time = e.target.value;
@@ -77,6 +104,15 @@ const AddDelivery = () => {
       });
   };
 
+  const validadorInput = () => {
+    return {
+      
+    }
+   
+  };
+
+  console.log('valid', validadorInput());
+
   return (
     <section>
       {status.type === 'erro' ? <AlertDismissible /> : <SuccessCompoment />}
@@ -88,11 +124,12 @@ const AddDelivery = () => {
               name={delivery.DeliveryIdentifier.identifier}
               onChange={handleDeliveryIdentifierChange}
               type="text"
+              maxLength={3}
               placeholder="Enter identifier"
             />
           </Form.Group>
           <Form.Group as={Col}>
-            <Form.Label htmlFor="deliveryDate">DeliveryDate</Form.Label>
+            <Form.Label htmlFor="deliveryDate">Date</Form.Label>
             <Form.Control
               name={delivery.DeliveryDate}
               onChange={handleDeliveryDateChange}
@@ -101,27 +138,30 @@ const AddDelivery = () => {
             />
           </Form.Group>
           <Form.Group as={Col}>
-            <Form.Label htmlFor="deliveryWeight">DeliveryWeight</Form.Label>
+            <Form.Label htmlFor="deliveryWeight">Weight</Form.Label>
             <Form.Control
               name={delivery.DeliveryWeight.DeliveryWeight}
               onChange={handleDeliveryWeightChange}
               type="number"
+              maxLength={6}
               placeholder="Enter delivery weight"
             />
           </Form.Group>
         </Row>
         <Row className="mb-3">
           <Form.Group as={Col}>
-            <Form.Label htmlFor="deliveryWarehouse">DeliveryWarehouse</Form.Label>
+            <Form.Label htmlFor="arrivalLocation">Warehouse</Form.Label>
             <Form.Control
-              name={delivery.DeliveryWarehouse.TimeLoadTruck}
+              as="select"
+              name={delivery.DeliveryWarehouse}
               onChange={handleDeliveryWarehouseChange}
-              type="number"
-              placeholder="Enter delivery warehouse"
-            />
+              type="text"
+              placeholder="Enter arrivalLocation">
+              <ListWarehouseOptions warehouse={warehouse} />
+            </Form.Control>
           </Form.Group>
           <Form.Group as={Col}>
-            <Form.Label htmlFor="timeLoadTruck">TimeLoadTruck</Form.Label>
+            <Form.Label htmlFor="timeLoadTruck">Time load truck</Form.Label>
             <Form.Control
               name={delivery.TimeUnloadTruck.Time}
               onChange={handleTimeUnloadTruckChange}
@@ -130,7 +170,7 @@ const AddDelivery = () => {
             />
           </Form.Group>
           <Form.Group as={Col}>
-            <Form.Label htmlFor="timeUnloadTruck">TimeUnloadTruck</Form.Label>
+            <Form.Label htmlFor="timeUnloadTruck">Time unload truck</Form.Label>
             <Form.Control
               name={delivery.TimeLoadTruck.Time}
               onChange={handleTimeLoadTruckChange}
@@ -139,7 +179,8 @@ const AddDelivery = () => {
             />
           </Form.Group>
         </Row>
-        <Button variant="dark" type="submit">
+        <Button variant="dark" type="submit"
+          disabled={loading === true || !validadorInput()} >
           Submit
         </Button>
       </Form>

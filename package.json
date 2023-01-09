@@ -18,11 +18,16 @@
     "bootstrap": "^5.2.2",
     "cdbreact": "^1.5.3",
     "drei": "^2.2.21",
+    "firebase": "^9.15.0",
+    "framer-motion": "^7.7.3",
     "jest-react": "^0.14.0",
     "puppeteer": "^19.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-google-button": "^0.7.2",
+    "react-google-recaptcha": "^2.1.0",
     "react-hook-form": "^7.39.3",
+    "react-paginate": "^8.1.4",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
     "react-scripts": "^5.0.1",
@@ -33,6 +38,7 @@
   "scripts": {
     "start": "set PORT=3006 && react-scripts start",
     "build": "react-scripts build",
+    "dev": "webpack --config webpack.config.dev.js && webpack --config webpack.config.build.js",
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
@@ -63,6 +69,7 @@
     "@babel/preset-react": "^7.18.6",
     "@testing-library/react": "^13.4.0",
     "babel-jest": "^29.3.1",
+    "dotenv": "^16.0.3",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -77,15 +84,20 @@
       "jest-junit"
     ]
   },
-   "env": {
-            "development": {
-                "plugins": ["transform-es2015-modules-commonjs"]
-            },
-            "test": {
-                "plugins": ["transform-es2015-modules-commonjs", "@babel/plugin-proposal-class-properties"],
-                "presets": [
-                    "@babel/preset-react"
-                ]
-            }
-        }
+  "env": {
+    "development": {
+      "plugins": [
+        "transform-es2015-modules-commonjs"
+      ]
+    },
+    "test": {
+      "plugins": [
+        "transform-es2015-modules-commonjs",
+        "@babel/plugin-proposal-class-properties"
+      ],
+      "presets": [
+        "@babel/preset-react"
+      ]
+    }
+  }
 }

@@ -11,7 +11,7 @@ const PaginationComponent = ({
 
   useEffect(() => {
     if (total > 0 && itemsPerPage > 0)
-      setTotalPages(Math.ceil(total / itemsPerPage));
+      setTotalPages(total);
   }, [total, itemsPerPage]);
 
   const paginationItems = useMemo(() => {
@@ -28,12 +28,10 @@ const PaginationComponent = ({
         </Pagination.Item>
       );
     }
-
     return pages;
   }, [totalPages, currentPage, onPageChange]);
 
   if (totalPages === 0) return;
-  console.log(paginationItems);
   return (
     <Pagination className="pagination">
       <Pagination.Prev onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1} />

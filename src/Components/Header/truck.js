@@ -8,7 +8,7 @@ export function Truck() {
   const sceneRef = useRef();
   const materials = useLoader(MTLLoader, 'obj/models/truck_daf.mtl');
   const obj = useLoader(OBJLoader, 'obj/models/truck_daf.obj', (loader) => {
-    materials.preload();
+  
     loader.setMaterials(materials);
   });
 

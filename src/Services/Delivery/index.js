@@ -1,13 +1,13 @@
 import axios from 'axios';
 import {DOTNET_BASE_URL} from '../../Config/config'
 
-export async function deliveryGetAll(signal) {
-  try {
-    const response = await axios.get(`${DOTNET_BASE_URL}/deliverys`, { signal });
-    return response.data;
-  } catch (err) {
-    throw new Error(err);
-  }
+export async function deliveryGetAll(offset, size, filters, signal) {
+    try {
+        const response = await axios.post(`${DOTNET_BASE_URL}/deliverys/list?offset=${offset}&size=${size}`, filters, {signal});
+        return response.data;
+    } catch (err) {
+        throw new Error(err);
+    }
 }
 
 export async function deliveryDelete(identifier) {
@@ -47,12 +47,11 @@ export async function deliverySave(delivery, options) {
     }
 }
 
-export async function deliveryUpdate(identifier, delivery , options) {
+export async function deliveryUpdate(identifier, delivery, options) {
     try {
         if (!identifier) {
             throw new Error('Invalid input data provided.');
         }
-        console.log(delivery);
         const response = await axios.put(`${DOTNET_BASE_URL}/deliverys/${identifier}`, delivery, {
             headers: {
                 'Content-Type': 'application/json',

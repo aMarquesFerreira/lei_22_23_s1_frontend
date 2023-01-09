@@ -17,6 +17,7 @@ import { TextureLoader } from 'three';
 
 const context = createContext();
 /* eslint-disable react/display-name */
+
 const Cube = forwardRef(
   (
     {
@@ -98,9 +99,13 @@ export const Warehouse = forwardRef(
   ({ color = 'black', name, connectedTo = [], position = [0, 0, 0], ...props }, ref) => {
     const set = useContext(context);
     const { size, camera } = useThree();
+
     const [pos, setPos] = useState(() => new THREE.Vector3(...position));
+
     const state = useMemo(() => ({ position: pos, connectedTo }), [pos, connectedTo]);
+
     const roadAshalt = useLoader(TextureLoader, TEXTURE);
+    
     const material = useMemo(() => new THREE.MeshStandardMaterial({ roadAshalt }), [color]);
     useFrame(() => {
       /* setPos(new THREE.Vector3(...position)); */

@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import API_BASE_URL from '../Config/config';
+import ROLES from '../Config/roles'
+import { getMe } from '../Services/User'
 import axios from 'axios';
 
 const Context = createContext();
@@ -29,8 +31,7 @@ function AuthProvider({ children }) {
       }
     };
 
-    axios
-      .get('/auth/me', headers)
+    getMe()
       .then(() => {
         return true;
       })
@@ -48,6 +49,7 @@ function AuthProvider({ children }) {
   function handleLogout() {
     setAuthenticated(false);
     localStorage.removeItem('token');
+    localStorage.clear();
     api.defaults.headers.Authorization = undefined;
   }
 
