@@ -6,9 +6,9 @@ const Authorization = ({ allowedRoles }) => {
     const { auth } = useAuth();
     const location = useLocation();
 
-    console.log(allowedRoles, "Authorization roles are ");
-    console.log(auth, "allowed roles are authenticated ");
-    console.log(auth.roles, "authorized roles")
+    //console.log(allowedRoles, "Authorization roles are ");
+    //console.log(auth, "allowed roles are authenticated ");
+    //console.log(auth.roles, "authorized roles")
 
     function handleAuthorization() {
         const authorization = localStorage.getItem("token");
@@ -23,9 +23,11 @@ const Authorization = ({ allowedRoles }) => {
     function getAllowedRoles(value) {
         if (value === undefined || value === null) return (<Navigate to="/signin" state={{ from: location }} replace />)
         if (auth.roles == value) {
-            return true
+            return JSON.parse(value);
+        } else {
+            return (<Navigate to="/signin" state={{ from: location }} replace />)
         }
-        return value
+        return value ? auth.roles : <Navigate to="/unauthorized" state={{ from: location }} replace />
     }
 
 

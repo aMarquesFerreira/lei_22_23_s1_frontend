@@ -76,7 +76,6 @@ const AddDelivery = () => {
   }
   console.log(delivery);
   const handleSubmit = (e) => {
-    e.preventDefault();
 
     const headers = {
       'Content-Type': 'application/json'
@@ -98,6 +97,7 @@ const AddDelivery = () => {
         }
       })
       .catch(() => {
+        e.preventDefault();
         setStatus({
           type: 'erro',
           messagem: 'Err: Try later!'
@@ -105,20 +105,7 @@ const AddDelivery = () => {
       });
   };
 
-  const validadorInput = () => {
-    console.log(delivery.DeliveryIdentifier.identifier);
-    return (
-      validatorDeliveryIdentifier(delivery.DeliveryIdentifier.identifier) &&
-      validatorDeliveryDate(delivery.DeliveryDate) &&
-      validatorDeliveryWeight(delivery.DeliveryWeight.DeliveryWeight) &&
-      validatorDeliveryWarehouse(delivery.DeliveryWarehouse) &&
-      validatorTimeLoadTruck(delivery.TimeLoadTruck.Time) &&
-      validatorTimeUnloadTruck(delivery.TimeUnloadTruck.Time)
-    )
 
-  };
-
-  console.log('valid', validadorInput());
 
   return (
     <section>
@@ -189,7 +176,6 @@ const AddDelivery = () => {
         <Button
           variant="dark"
           type="submit"
-          disabled={loading === true || !validadorInput()}
         >
           Submit
         </Button>

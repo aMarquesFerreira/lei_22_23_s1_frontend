@@ -1,5 +1,7 @@
+import { useMemo } from "react";
 import { createContext, useEffect, useState } from "react";
 import { AlwaysDepth } from "three";
+import { auth } from "../Components/Firebase";
 
 const AuthContext = createContext({});
 
@@ -7,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [auth, setAuth] = useState({});
 
-    console.log(JSON.stringify(auth) + " Auth provider")
+ /*    console.log(JSON.stringify(auth) + " Auth provider")
     useEffect(() => {
         if (JSON.stringify(auth) == "{}") {
             const token = localStorage.getItem("token");
@@ -17,13 +19,21 @@ export const AuthProvider = ({ children }) => {
         } else {
             console.log("User is authenticated")
         }
-    }, [])
+    }, []) */
 
-    return (
-        <AuthContext.Provider value={{ auth, setAuth }}>
-            {children}
-        </AuthContext.Provider>
-    )
+    const value = useMemo(
+        () => ({
+            auth,
+            setAuth,
+            isAuthenticated
+        }),
+        [auth]
+    );
+return (
+    <AuthContext.Provider value={ value }>
+        {children}
+    </AuthContext.Provider>
+)
 }
 
 export default AuthContext;
