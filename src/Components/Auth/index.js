@@ -1,33 +1,38 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../../Hook/Auth";
+import { getMe } from "../../Services/User"
 
 const Authorization = ({ allowedRoles }) => {
     const { auth } = useAuth();
     const location = useLocation();
 
-    // console.log(allowedRoles, "Authorization roles are ");
-   // console.log(auth), "allowed roles are authenticated ";
-    //console.log(auth.roles, "authorized roles")
-    //console.log(auth.email, "email authorized")
-    if (auth && auth.roles) {
-        if (auth.roles.includes("ADMIN")) {
-            return (
-                <Outlet />
-            )
-        }
+    console.log(allowedRoles, "Authorization roles are ");
+    console.log(auth, "allowed roles are authenticated ");
+    console.log(auth.roles, "authorized roles")
+
+    function handleAuthorization() {
+        const authorization = localStorage.getItem("token");
+        getMe(authorization).then((response) => {
+            console.log(response);
+
+        }).catch((error) => {
+            console.log(error.message);
+        })
     }
 
-    if (auth && auth.roles) {
-        if (auth.roles.includes("USER")) {
-            return (
-                <Outlet />
-            )
+    function getAllowedRoles(value) {
+        if (value === undefined || value === null) return (<Navigate to="/signin" state={{ from: location }} replace />)
+        if (auth.roles == value) {
+            return true
         }
+        return value
     }
+
+
 
 
     return (
-        auth?.roles?.find(role => allowedRoles?.includes(role))
+        auth?.roles != getAllowedRoles(allowedRoles)
             ? <Outlet />
             : auth?.email
                 ? <Navigate to="/unauthorized" state={{ from: location }} replace />

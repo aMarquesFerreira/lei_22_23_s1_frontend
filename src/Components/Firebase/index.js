@@ -6,11 +6,13 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithRedirect,
+  signInWithPhoneNumber,
   signOut,
   onAuthStateChanged,
   OAuthProvider,
+  RecaptchaVerifier,
 } from 'firebase/auth';
-import {initializeAppCheck, ReCaptchaV3Provider} from 'firebase/app-check'
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -43,5 +45,33 @@ const appCheck = initializeAppCheck(app, {
   provider: new ReCaptchaV3Provider("6Ldwn8MjAAAAAKIVg020KyE9kXvyeI1GEDgHZFgE"),
   isTokenAutoRefreshEnabled: true,
 });
-export { analytics, auth, provider, signInWithPopup, signOut, OAuthProvider, onAuthStateChanged };
+
+export function logout() {
+  auth.signOut();
+  //analytics.logEvent("logout");
+  window.location.reload();
+}
+
+export function setUpRecaptha(phone) {
+  const recaptcha = new RecaptchaVerifier('recaptcha-container',
+    {
+      callback: (response) => {
+        if (response) {
+          analytics.logEvent("recaptcha-success");
+        }
+        else {
+          alert(
+            "Recaptcha verification failed.Please try again!"
+          );
+          analytics.logEvent("recaptcha-error");
+        }
+      }
+    },
+    auth
+  )
+  recaptcha.render();
+  return signInWithPhoneNumber(auth, phone, recaptcha)
+}
+
+export { analytics, auth, provider, signInWithPopup, signOut, OAuthProvider, onAuthStateChanged};
 

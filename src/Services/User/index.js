@@ -13,10 +13,15 @@ export async function userGetAll() {
     }
 }
 
-export async function getMe() {
+export async function getMe(token) {
     try {
-        const response = await axios.get(`${API_BASE_URL}/auth/me`,{signal: Controller.signal})
-        return response.status(200).json();
+        const response = await axios.get(`${API_BASE_URL}/auth/me`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            signal: Controller.signal
+        })
+        return response.data;
     } catch (err) {
         throw new Error(err);
     }

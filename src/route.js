@@ -17,9 +17,11 @@ import Travel from './Views/Planeamento/List';
 import EditDelivery from './Components/Delivery/EditDelivery';
 import RedeNetWork from './Views/RedeNetWork';
 import Unauthorized from './Components/Unauthorized';
+import PhoneSignUp from './Components/PhoneAuth';
 import Layout from './Components/Layout';
 import Authorization from './Components/Auth';
 import { createBrowserHistory } from "history";
+import { Navigate } from 'react-router-dom';
 
 
 const history = createBrowserHistory();
@@ -35,14 +37,19 @@ export default function App() {
     <>
       <AnimatePresence exitBeforeEnter>
         <Routes history={history} location={location} key={location.pathname}>
-          <Route path="/layout" element={<Layout />} />
-         
+
+          {/* public routes children */}
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+          </Route>
+          
           {/* public routes */}
           <Route index path='/home' element={<Dashboard />} />
           <Route exact path='/about' element={<About />} />
           <Route exact path='/signin' element={<Login />} />
           <Route exact path='/signup' element={<SignUp />} />
           <Route exact path='/unauthorized' element={<Unauthorized />} />
+          <Route exact path='/signin/phone' element={<PhoneSignUp />} />
 
           {/* private Logic */}
           <Route element={<Authorization allowedRoles={[ROLES.ADMIN]} />}>
@@ -63,6 +70,8 @@ export default function App() {
             <Route exact path='/warehouse/new' element={<NewWarehouse />} />
             <Route exact path='/warehouse/edit/:id' element={<EditWarehouse />} />
           </Route>
+
+          
 
           {/* error 404 */}
 

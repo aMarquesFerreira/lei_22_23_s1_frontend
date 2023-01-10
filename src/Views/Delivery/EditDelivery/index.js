@@ -3,7 +3,7 @@ import NavbarComponent from '../../../Components/NavBar';
 import FooterCompoment from '../../../Components/Footer';
 import EditDelivery from "../../../Components/Delivery/EditDelivery";
 
-export default function NewDelivery() {
+export default function NewDelivery({ location }) {
     return (
         <>
             <header>

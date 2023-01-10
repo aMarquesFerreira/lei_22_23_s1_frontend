@@ -59,6 +59,7 @@ const AddDelivery = () => {
 
   function handleDeliveryDateChange(e) {
     delivery.DeliveryDate = e.target.value;
+      setDelivery({...delivery   });
   }
   function handleDeliveryWeightChange(e) {
     delivery.DeliveryWeight.DeliveryWeight = e.target.value;
@@ -73,7 +74,7 @@ const AddDelivery = () => {
   function handleTimeLoadTruckChange(e) {
     delivery.TimeLoadTruck.Time = e.target.value;
   }
-
+  console.log(delivery);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -105,10 +106,16 @@ const AddDelivery = () => {
   };
 
   const validadorInput = () => {
-    return {
-      
-    }
-   
+    console.log(delivery.DeliveryIdentifier.identifier);
+    return (
+      validatorDeliveryIdentifier(delivery.DeliveryIdentifier.identifier) &&
+      validatorDeliveryDate(delivery.DeliveryDate) &&
+      validatorDeliveryWeight(delivery.DeliveryWeight.DeliveryWeight) &&
+      validatorDeliveryWarehouse(delivery.DeliveryWarehouse) &&
+      validatorTimeLoadTruck(delivery.TimeLoadTruck.Time) &&
+      validatorTimeUnloadTruck(delivery.TimeUnloadTruck.Time)
+    )
+
   };
 
   console.log('valid', validadorInput());
@@ -123,7 +130,7 @@ const AddDelivery = () => {
             <Form.Control
               name={delivery.DeliveryIdentifier.identifier}
               onChange={handleDeliveryIdentifierChange}
-              type="text"
+              type="number"
               maxLength={3}
               placeholder="Enter identifier"
             />
@@ -179,8 +186,11 @@ const AddDelivery = () => {
             />
           </Form.Group>
         </Row>
-        <Button variant="dark" type="submit"
-          disabled={loading === true || !validadorInput()} >
+        <Button
+          variant="dark"
+          type="submit"
+          disabled={loading === true || !validadorInput()}
+        >
           Submit
         </Button>
       </Form>

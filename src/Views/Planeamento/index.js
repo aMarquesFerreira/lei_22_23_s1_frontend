@@ -4,7 +4,7 @@ import FooterCompoment from '../../Components/Footer';
 import './styles.css';
 import PlaneamentoCompoment from '../../Components/Planeamento';
 
-export default function Planeamento() {
+export default function Planeamento({ location }) {
   return (
     <>
       <header>

@@ -6,8 +6,10 @@ import AlertDismissible from './../../Alerts/danger';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
+import useAuth from '../../../Hook/Auth';
 
 const WarehouseInactive = ({ id }) => {
+    const { auth ,setAuth } = useAuth();
     const initWarehousesIsActive = {
         WarehouseIdentifier: {
             Identifier: id
@@ -46,6 +48,15 @@ const WarehouseInactive = ({ id }) => {
                 });
             });
     };
+ 
+    useEffect(() => {
+        if (JSON.stringify(auth) !== '{}') {
+            const email = window.localStorage.getItem('email');
+            const roles = window.localStorage.getItem('role');
+            const token = window.localStorage.getItem('token');
+            if(roles !== null) return setAuth({ email, roles, token });
+        }
+    }, []);
 
     return (
         <section>

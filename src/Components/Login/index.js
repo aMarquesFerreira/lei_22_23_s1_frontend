@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { auth, provider, OAuthProvider, onAuthStateChanged } from '../Firebase'
 import { GoogleButton } from 'react-google-button';
 import ReCAPTCHA from "react-google-recaptcha";
-import { RecaptchaVerifie } from "../../Services/AuthRecaptch"
+import { RecaptchaVerifieToken } from "../../Services/AuthRecaptch"
 import { KEY_CLIENT } from '../../Config/config'
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import useAuth from '../../Hook/Auth';
@@ -154,7 +154,7 @@ const Login = () => {
         const token = recaptchaRef.current.getValue();
         setError(true);
         if (token) {
-            RecaptchaVerifie(token);
+            RecaptchaVerifieToken(token);
             recaptchaRef.current.reset();
         }
         return setLoading(false);
@@ -175,8 +175,8 @@ const Login = () => {
         <>
             <Container className="container mt-3">
                 <Row className="vh-100 d-flex justify-content-center align-items-center">
+                    <div ref={errRef}>{loading ? true : <Alert>{error}</Alert>}</div>
                     <Col md={8} lg={6} xs={12}>
-                        <div ref={errRef}>{error ? false : <Alert>{error}</Alert>}</div>
                         <div className="border border-3 border-dark"></div>
                         <Card className="shadow">
                             <Card.Body>
@@ -224,13 +224,25 @@ const Login = () => {
                                         onClick={handleClickGoogleAccount}
                                     />
                                 </div>
+                                <div className='h-100 d-flex align-items-center justify-content-center'>
+                                    <Link to="/signin/phone" style={{marginTop: "20px"}}>
+                                        <Button
+                                            variant="success"
+                                            size="lg"
+                                        >
+                                        Phone authentication
+                                        </Button>
+                                    </Link>
+                                </div>
+                                <div className='h-100 d-flex align-items-center justify-content-center'>
                                 <ReCAPTCHA
                                     style={{ marginTop: '30px' }}
                                     sitekey={KEY_CLIENT}
                                     ref={recaptchaRef}
                                     onChange={onSubmitWithReCAPTCHA}
                                     grecaptcha={grecaptchaObject}
-                                />
+                                    />
+                                </div>
                             </Card.Body>
                         </Card>
                     </Col>

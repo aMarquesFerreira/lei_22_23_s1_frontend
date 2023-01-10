@@ -5,7 +5,7 @@ import ImgTRuck from './../../Components/Carousel/imgFrist.jpg'
 import Header from "../../Components/Header";
 import { motion } from "framer-motion";
 
-export default function Dashboard() {
+export default function Dashboard({ location }) {
 
   return (
     <>

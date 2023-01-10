@@ -1,20 +1,30 @@
 import { Navbar, Nav, NavDropdown, Form, Button, ButtonGroup } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../Hook/Auth';
+import { auth, signOut, logout } from "../Firebase";
+
 
 function NavbarComponent() {
   const navegate = useNavigate();
   const currentUser = localStorage.getItem('role')
   const { setAuth } = useAuth();
-  const initialState = {
+/*   const initialState = {
     email: "",
     role: "",
     token: ""
-  };
+  }; */
   const handleLogoutClick = () => {
     localStorage.clear();
-    window.location.reload();
-    setAuth(...initialState);
+    if (auth) {
+      signOut(auth).then(() => {
+        console.log("authenticated successfully logged out");
+        setAuth(null);
+
+      }).catch((error) => {
+        console.log(error.message);
+      });
+    }
+    logout()
     navegate("/home");
   }
 
@@ -68,25 +78,25 @@ function NavbarComponent() {
 
 
 
-    return (
-      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-        <Navbar.Brand className="mx-3">ElectricGo</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link as={Link} to="/home">
-              Home
-            </Nav.Link>
-            <Nav.Link as={Link} to="/about">
-              About
-            </Nav.Link>
-            {authRoles()}
-          </Nav>
-          <Form inline className="mx-3">
-            {authButton()}
-          </Form>
-        </Navbar.Collapse>
-      </Navbar>
-    );
-  }
-  export default NavbarComponent;
+  return (
+    <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+      <Navbar.Brand className="mx-3">ElectricGo</Navbar.Brand>
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      <Navbar.Collapse id="responsive-navbar-nav">
+        <Nav className="mr-auto">
+          <Nav.Link as={Link} to="/home">
+            Home
+          </Nav.Link>
+          <Nav.Link as={Link} to="/about">
+            About
+          </Nav.Link>
+          {authRoles()}
+        </Nav>
+        <Form inline className="mx-3">
+          {authButton()}
+        </Form>
+      </Navbar.Collapse>
+    </Navbar>
+  );
+}
+export default NavbarComponent;

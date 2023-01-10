@@ -5,7 +5,7 @@ import AlertDismissible from '../../Alerts/danger';
 import { Form, Button, Col, Row } from 'react-bootstrap';
 import { deliveryUpdate } from '../../../Services/Delivery';
 
-const DeliveryDetails = () => {
+const DeliveryDetails = ({math}) => {
   const { id } = useParams();
   const [status, setStatus] = useState({
     type: '',
@@ -51,18 +51,16 @@ const DeliveryDetails = () => {
     delivery.TimeUnloadTruck.timeUnloadTruck = e.target.value;
   }
 
-  console.log(delivery);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(delivery);
+
     const headers = {
       'Content-Type': 'application/json'
     };
   
     deliveryUpdate(id, delivery, headers)
       .then((response) => {
-        console.log(delivery);
         console.log(response.data.delivery);
         if (response.data.erro) {
           setStatus({

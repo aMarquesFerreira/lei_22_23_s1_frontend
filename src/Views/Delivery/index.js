@@ -8,7 +8,7 @@ import {deliveryGetAll} from '../../Services/Delivery';
 import PaginationComponent from '../../Components/Pagination';
 import {motion} from "framer-motion";
 
-export default function Delivery({location}) {
+export default function Delivery({match}) {
     const navigation = useNavigate();
 
     const [deliverys, setDeliverys] = useState([]);

@@ -5,7 +5,6 @@ import {
   validarPassword,
   validarFristname,
   validarLastname,
-  validarPhone,
   validarConfirmarPassword
 } from '../../utils/user.validatores';
 import OptionsRole from './options.role';
@@ -15,7 +14,7 @@ import { motion } from "framer-motion";
 import Alert from "../Alerts/danger"
 import { Link, useNavigate } from 'react-router-dom';
 
-const CompomentSignUp = ({ math }) => {
+const CompomentSignUp = ({ location }) => {
   const initUser = {
     email: '',
     firstName: '',
@@ -25,6 +24,7 @@ const CompomentSignUp = ({ math }) => {
   };
   const [status, setStatus] = useState();
   const [user, setUser] = useState(initUser);
+  console.log(user, "user form initialized")
   const [roles, setRoles] = useState([]);
   const [error, setError] = useState();
   const navigate = useNavigate();
@@ -64,8 +64,7 @@ const CompomentSignUp = ({ math }) => {
   };
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       const bearerToken = localStorage.getItem("token")
       const options = {
@@ -75,10 +74,11 @@ const CompomentSignUp = ({ math }) => {
         withCredentials: false,
       }
       setStatus(true);
+      delete user.confirmPassword;
       SignUp(user, signal, options)
         .then((data) => {
           setUser(data)
-        //  navigate("/signin")
+          navigate('/signin')
         })
     } catch (error) {
       if (signal.aborted) {
@@ -97,17 +97,16 @@ const CompomentSignUp = ({ math }) => {
       }, 1000);
     }
   }
-
-/*   const validadorInput = () => {
+  const validadorInput = () => {
     return (
       validarEmail(user.email) &&
       validarPassword(user.password) &&
       validarFristname(user.firstName) &&
       validarLastname(user.lastName) &&
-      validarConfirmarPassword(user.password, user.confirmPassword)
-    );
-  };
- */
+      validarConfirmarPassword(user.password , user.confirmPassword)
+    )
+  }
+
   return (
     <>
       <motion.main
@@ -182,7 +181,7 @@ const CompomentSignUp = ({ math }) => {
                       <Button
                         variant="dark"
                         type="submit"
-                      /*   disabled={status === true || !validadorInput()} */
+                        disabled={status === true || !validadorInput()} 
                       >
                         Submit
                       </Button>

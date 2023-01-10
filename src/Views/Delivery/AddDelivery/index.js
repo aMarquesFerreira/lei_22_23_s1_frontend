@@ -4,7 +4,7 @@ import FooterCompoment from '../../../Components/Footer';
 import AddTruck from '../../../Components/Truck/AddTruck';
 import AddDelivery from "../../../Components/Delivery/AddDelivery";
 
-export default function NewDelivery() {
+export default function NewDelivery({ location }) {
     return (
         <>
             <header>
